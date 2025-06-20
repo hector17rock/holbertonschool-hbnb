@@ -21,18 +21,18 @@ def test_amenity_creation():
 # Test Place and Review relationships
 def test_place_creation_and_relationships():
     owner = User(first_name="Alice", last_name="Smith", email="alice@example.com")
-    place = Place(title="Ocean View", description="Nice place by the beach", price=200,
+    place = Place(name="Ocean View", description="Nice place by the beach", price=200,
                   latitude=25.7617, longitude=-80.1918, owner=owner)
 
     # Test place properties
-    assert place.title == "Ocean View"
+    assert place.name == "Ocean View"
     assert place.owner == owner
     assert place.reviews == []
     assert place.amenities == []
 
     # Add review
     review = Review(user=owner, place=place, rating=4, comment="Great view!")
-    place.add_review(review)
+    place.add_reviews(review)
     assert len(place.reviews) == 1
     assert place.reviews[0].comment == "Great view!"
 

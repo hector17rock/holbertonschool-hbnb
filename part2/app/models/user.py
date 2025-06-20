@@ -1,4 +1,4 @@
-from .base_model inport BaseModel
+from .base_model import BaseModel
 
 
 class User(BaseModel):
@@ -8,3 +8,8 @@ class User(BaseModel):
         self.last_name = last_name
         self.email = email
         self.password = password
+        self.places = []  # Lst places
+
+    def add_place(self, place):
+        if place and place.owner == self:
+            self.places.append(place)
