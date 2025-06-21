@@ -1,218 +1,275 @@
-# 🏡 HBnB Evolution — Technical Documentation
+# 📘 HBnB Evolution – Part 1: Technical Documentation
 
-Welcome to the technical blueprint of **HBnB Evolution**, a simplified AirBnB-like web application. This document outlines the **architecture**, **business logic**, and **interaction flows** between core system components.
+## 📌 Overview
 
----
-
-## 📌 Project Overview
-
-**HBnB Evolution** allows users to:
-- Register and manage user profiles
-- List and manage places for rent
-- Submit and view reviews on places
-- Associate places with amenities
-
-This documentation serves as a foundation for future development phases by clearly defining system architecture and behavior.
+This document outlines the technical foundation for the **HBnB Evolution** project, a simplified AirBnB-like application. The goal of this phase is to produce clear, maintainable documentation that will guide the design and implementation of the system in later stages.
 
 ---
 
-## 🧱 1. High-Level Architecture
+## 🎯 Context and Objective
 
-### 🎯 Objective
+In this initial phase, we focus on:
 
-Visualize the system's **three-layer architecture**:
-1. **Presentation Layer** – User-facing services and APIs
-2. **Business Logic Layer** – Core application models and logic
-3. **Persistence Layer** – Handles communication with the database
+- Structuring the application using a **three-layer architecture**
+- Applying the **Facade design pattern** for cleaner communication between components
+- Documenting business entities and API flows using **UML diagrams**
+- Ensuring alignment with business rules and software engineering principles
 
-### 🧩 Package Diagram
+---
 
+## 🧩 Problem Description
+
+HBnB Evolution allows users to manage:
+
+- **Users** – Create, update, delete user profiles
+- **Places** – Add properties with descriptions, pricing, and geolocation
+- **Reviews** – Submit comments and ratings for places
+- **Amenities** – Manage services that can be associated with places
+
+---
+
+## 📚 Business Rules and Requirements
+
+### 🔸 User
+- Attributes: `first_name`, `last_name`, `email`, `password`, `is_admin`
+- Can: register, update profile, be deleted
+
+### 🔸 Place
+- Attributes: `title`, `description`, `price`, `latitude`, `longitude`
+- Owned by a user; can have amenities
+- Can: be created, updated, deleted, and listed
+
+### 🔸 Review
+- Attributes: `rating`, `comment`
+- Linked to a specific place and user
+- Can: be created, updated, deleted, and listed
+
+### 🔸 Amenity
+- Attributes: `name`, `description`
+- Can: be created, updated, deleted, and listed
+
+**All entities:**
+- Must have a unique `id` (UUID)
+- Must track `created_at` and `updated_at` timestamps
+
+---
+
+## 🏗 Architecture and Layers
+
+The application is divided into three main layers:
+
+1. **Presentation Layer**: API and services used by end users
+2. **Business Logic Layer**: Core models and rules
+3. **Persistence Layer**: Data storage and retrieval
+
+**Data will be stored in a database** to be implemented in Part 3.
+
+---
+
+## 📦 Task 0: High-Level Package Diagram
+
+### ✅ Objective
+Illustrate the three-layer architecture and the use of the **Facade Pattern** to connect them.
+
+### 🖼️ Diagram (Mermaid.js)
 ```mermaid
 classDiagram
-    class PresentationLayer {
-        <<interface>>
-        + APIService
-    }
+class PresentationLayer {
+    <<Interface>>
+    +ServiceAPI
+}
+class BusinessLogicLayer {
+    +ModelClasses
+}
+class PersistenceLayer {
+    +DatabaseAccess
+}
+PresentationLayer --> BusinessLogicLayer : Facade Pattern
+BusinessLogicLayer --> PersistenceLayer : Database Operations
 
-    class BusinessLogicLayer {
-        + Facade
-        + User, Place, Review, Amenity
-    }
 
-    class PersistenceLayer {
-        + UserDAO, PlaceDAO, ReviewDAO, AmenityDAO
-        + DBConnection
-    }
+📝 Explanatory Notes
+Presentation Layer exposes services to the client.
+Business Logic Layer applies domain rules via models.
+Persistence Layer abstracts data handling.
+The Facade simplifies and centralizes logic exposure.
+🧱 Task 1: Detailed Class Diagram for Business Logic Layer
 
-    PresentationLayer --> BusinessLogicLayer : uses (via Facade)
-    BusinessLogicLayer --> PersistenceLayer : accesses data
+✅ Objective
+Define entities and their relationships in the core logic of the application.
 
-# 🏡 HBnB Evolution — Technical Documentation
 
-Welcome to the technical blueprint of **HBnB Evolution**, a simplified AirBnB-like web application. This document outlines the **architecture**, **business logic**, and **interaction flows** between core system components.
-
----
-
-## 📌 Project Overview
-
-**HBnB Evolution** allows users to:
-- Register and manage user profiles
-- List and manage places for rent
-- Submit and view reviews on places
-- Associate places with amenities
-
-This documentation serves as a foundation for future development phases by clearly defining system architecture and behavior.
-
----
-
-## 🧱 1. High-Level Architecture
-
-### 🎯 Objective
-
-Visualize the system's **three-layer architecture**:
-1. **Presentation Layer** – User-facing services and APIs
-2. **Business Logic Layer** – Core application models and logic
-3. **Persistence Layer** – Handles communication with the database
-
-🧠 2. Business Logic Class Diagram
-
-🎯 Objective
-Define entities with attributes, behaviors, and relationships.
-
-📘 Class Diagram
-
+🖼️ Example Class Diagram (Mermaid.js)
 classDiagram
-    class BaseModel {
-        +UUID id
-        +datetime created_at
-        +datetime updated_at
-        +save()
-        +to_dict()
-    }
+class User {
+    +UUID id
+    +str first_name
+    +str last_name
+    +str email
+    +str password
+    +bool is_admin
+    +datetime created_at
+    +datetime updated_at
+}
 
-    class User {
-        +string first_name
-        +string last_name
-        +string email
-        +string password
-        +bool is_admin
-    }
+class Place {
+    +UUID id
+    +str title
+    +str description
+    +float price
+    +float latitude
+    +float longitude
+    +datetime created_at
+    +datetime updated_at
+}
 
-    class Place {
-        +string title
-        +string description
-        +float price
-        +float latitude
-        +float longitude
-    }
+class Review {
+    +UUID id
+    +int rating
+    +str comment
+    +datetime created_at
+    +datetime updated_at
+}
 
-    class Review {
-        +int rating
-        +string comment
-    }
+class Amenity {
+    +UUID id
+    +str name
+    +str description
+    +datetime created_at
+    +datetime updated_at
+}
 
-    class Amenity {
-        +string name
-        +string description
-    }
+User "1" --> "0..*" Place : owns >
+Place "1" --> "0..*" Review : has >
+User "1" --> "0..*" Review : writes >
+Place "1" --> "*" Amenity : includes >
 
-    User --|> BaseModel
-    Place --|> BaseModel
-    Review --|> BaseModel
-    Amenity --|> BaseModel
 
-    User --> "0..*" Place : owns >
-    Place --> "0..*" Review : receives >
-    User --> "0..*" Review : writes >
-    Place --> "0..*" Amenity : includes >
+📝 Notes
+Entities include both identity fields and timestamp tracking
+Relationships reflect ownership and interactions:
+A user can own multiple places
+Places can include multiple amenities
+Reviews are linked to both user and place
 
-🔄 3. API Sequence Diagrams
 
-🎯 Objective
-Depict how system layers interact to handle API calls.
+🔄 Task 2: Sequence Diagrams for API Calls
 
-🧑‍💻 User Registration
+✅ Objective
+Visualize interaction flows across layers for major API calls.
 
-sequenceDiagram
-    participant User
-    participant APIService
-    participant Facade
-    participant UserDAO
-    participant DBConnection
+📌 Diagrams (Mermaid.js)
+1. User Registration
 
-    User->>APIService: POST /register
-    APIService->>Facade: handle_user_creation()
-    Facade->>UserDAO: save_user()
-    UserDAO->>DBConnection: INSERT INTO users
-    DBConnection-->>UserDAO: success
-    UserDAO-->>Facade: user_id
-    Facade-->>APIService: response
-    APIService-->>User: 201 Created + user_id
-
-🏠 Place Creation
 
 sequenceDiagram
-    participant User
-    participant APIService
-    participant Facade
-    participant PlaceDAO
-    participant DBConnection
+participant Client
+participant API
+participant Facade
+participant Repo
 
-    User->>APIService: POST /places
-    APIService->>Facade: create_place()
-    Facade->>PlaceDAO: save_place()
-    PlaceDAO->>DBConnection: INSERT INTO places
-    DBConnection-->>PlaceDAO: success
-    PlaceDAO-->>Facade: place_id
-    Facade-->>APIService: response
-    APIService-->>User: 201 Created + place_id
+Client->>API: POST /users
+API->>Facade: create_user(data)
+Facade->>Repo: add(user)
+Repo-->>Facade: success
+Facade-->>API: return user
+API-->>Client: 201 Created
 
-⭐ Review Submission
 
-sequenceDiagram
-    participant User
-    participant APIService
-    participant Facade
-    participant ReviewDAO
-    participant DBConnection
+2. Place Creation
 
-    User->>APIService: POST /reviews
-    APIService->>Facade: create_review()
-    Facade->>ReviewDAO: save_review()
-    ReviewDAO->>DBConnection: INSERT INTO reviews
-    DBConnection-->>ReviewDAO: success
-    ReviewDAO-->>Facade: review_id
-    Facade-->>APIService: response
-    APIService-->>User: 201 Created + review_id
-
-🗺️ Fetch Places (By Location)
 
 sequenceDiagram
-    participant User
-    participant APIService
-    participant Facade
-    participant PlaceDAO
-    participant DBConnection
+participant Client
+participant API
+participant Facade
+participant Repo
 
-    User->>APIService: GET /places?location=NYC
-    APIService->>Facade: fetch_places(location)
-    Facade->>PlaceDAO: get_places_by_location()
-    PlaceDAO->>DBConnection: SELECT * FROM places WHERE location=NYC
-    DBConnection-->>PlaceDAO: results
-    PlaceDAO-->>Facade: place_list
-    Facade-->>APIService: response
-    APIService-->>User: 200 OK + place_list
+Client->>API: POST /places
+API->>Facade: create_place(data)
+Facade->>Repo: add(place)
+Repo-->>Facade: success
+Facade-->>API: return place
+API-->>Client: 201 Created
 
-📂 Repo Structure
+
+3. Review Submission
+
+
+sequenceDiagram
+participant Client
+participant API
+participant Facade
+participant Repo
+
+Client->>API: POST /reviews
+API->>Facade: create_review(data)
+Facade->>Repo: add(review)
+Repo-->>Facade: success
+Facade-->>API: return review
+API-->>Client: 201 Created
+
+
+4. Fetch List of Places
+
+
+sequenceDiagram
+participant Client
+participant API
+participant Facade
+participant Repo
+
+Client->>API: GET /places
+API->>Facade: get_all_places()
+Facade->>Repo: list()
+Repo-->>Facade: [place1, place2, ...]
+Facade-->>API: return list
+API-->>Client: 200 OK
+
+
+📑 Task 3: Documentation Compilation
+
+✅ Objective
+Compile all deliverables into one complete reference for development.
+
+📘 Contents
+Introduction: Goals and scope of documentation
+Architecture: Overview of system design
+Class Diagram: Core entities and their structure
+Sequence Diagrams: How data flows for key use cases
+📌 Tools & Formats
+Diagrams: Mermaid.js, draw.io (optional)
+Format: Markdown for source, export to PDF if needed
+
+
+🔗 Resources
+
+UML Class Diagram Tutorial
+UML Sequence Diagrams
+Facade Pattern Guide
+Mermaid.js Docs
+
+
+✅ Expected Outcome
+
+A comprehensive, professional technical document that:
+
+Explains system architecture clearly
+Includes detailed UML diagrams for logic and flow
+Enables a seamless transition to implementation
+
+
+📁 Repository Structure
+
 
 holbertonschool-hbnb/
 └── part1/
     ├── diagrams/
     │   ├── package_diagram.mmd
     │   ├── class_diagram.mmd
-    │   ├── sequence_user_register.mmd
-    │   ├── sequence_place_creation.mmd
-    │   ├── sequence_review_submission.mmd
-    │   └── sequence_place_fetch.mmd
-    └── README.md ← (You are here!)
+    │   └── sequence_diagrams.mmd
+    ├── README.md
+    └── documentation.pdf
+
+
 
