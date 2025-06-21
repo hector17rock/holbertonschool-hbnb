@@ -2,261 +2,155 @@
 
 ## 📌 Overview
 
-This document outlines the technical foundation for the **HBnB Evolution** project, a simplified AirBnB-like application. The goal of this phase is to produce clear, maintainable documentation that will guide the design and implementation of the system in later stages.
+This document serves as the foundational blueprint for developing the HBnB Evolution application—a simplified version of an AirBnB-like platform. It outlines the system architecture, business rules, and interaction flows to guide implementation in future phases.
 
 ---
 
 ## 🎯 Context and Objective
 
-In this initial phase, we focus on:
+The primary goal of this phase is to produce comprehensive technical documentation that includes:
 
-- Structuring the application using a **three-layer architecture**
-- Applying the **Facade design pattern** for cleaner communication between components
-- Documenting business entities and API flows using **UML diagrams**
-- Ensuring alignment with business rules and software engineering principles
+- A clear architectural overview of the application
+- A detailed design of the business logic layer
+- Visual representations of the application's API workflows
+- Documentation that aligns with the system’s business requirements and supports future development
 
 ---
 
 ## 🧩 Problem Description
 
-HBnB Evolution allows users to manage:
+HBnB Evolution will support the following functionalities:
 
-- **Users** – Create, update, delete user profiles
-- **Places** – Add properties with descriptions, pricing, and geolocation
-- **Reviews** – Submit comments and ratings for places
-- **Amenities** – Manage services that can be associated with places
+### 🔸 User Management
+- Users can register, update their profiles, and be flagged as administrators.
+- Each user has: `first_name`, `last_name`, `email`, `password`, and `is_admin`.
 
----
+### 🔸 Place Management
+- Users can list properties with `title`, `description`, `price`, `latitude`, and `longitude`.
+- Places are linked to their owners and may include a list of amenities.
 
-## 📚 Business Rules and Requirements
+### 🔸 Review Management
+- Users can review places they have visited, providing a `rating` and a `comment`.
 
-### 🔸 User
-- Attributes: `first_name`, `last_name`, `email`, `password`, `is_admin`
-- Can: register, update profile, be deleted
+### 🔸 Amenity Management
+- Amenities are reusable objects with `name` and `description` attributes.
 
-### 🔸 Place
-- Attributes: `title`, `description`, `price`, `latitude`, `longitude`
-- Owned by a user; can have amenities
-- Can: be created, updated, deleted, and listed
-
-### 🔸 Review
-- Attributes: `rating`, `comment`
-- Linked to a specific place and user
-- Can: be created, updated, deleted, and listed
-
-### 🔸 Amenity
-- Attributes: `name`, `description`
-- Can: be created, updated, deleted, and listed
-
-**All entities:**
-- Must have a unique `id` (UUID)
-- Must track `created_at` and `updated_at` timestamps
+### Common Requirements
+- All objects must have a unique `id`.
+- Each object must record `created_at` and `updated_at` timestamps.
 
 ---
 
 ## 🏗 Architecture and Layers
 
-The application is divided into three main layers:
+The system is built using a **layered architecture**, divided into:
 
-1. **Presentation Layer**: API and services used by end users
-2. **Business Logic Layer**: Core models and rules
-3. **Persistence Layer**: Data storage and retrieval
+1. **Presentation Layer**: Exposes APIs and handles client interactions.
+2. **Business Logic Layer**: Enforces application rules and models core entities.
+3. **Persistence Layer**: Manages data storage and retrieval operations.
 
-**Data will be stored in a database** to be implemented in Part 3.
+To simplify interactions between these layers, the **Facade Design Pattern** is used. All API calls interact with the business logic through a central `Facade` interface.
 
 ---
 
-## 📦 Task 0: High-Level Package Diagram
+## 🧱 Task 0: High-Level Package Diagram
 
 ### ✅ Objective
-Illustrate the three-layer architecture and the use of the **Facade Pattern** to connect them.
+Create a package diagram that shows:
 
-### 🖼️ Diagram (Mermaid.js)
-```mermaid
-classDiagram
-class PresentationLayer {
-    <<Interface>>
-    +ServiceAPI
-}
-class BusinessLogicLayer {
-    +ModelClasses
-}
-class PersistenceLayer {
-    +DatabaseAccess
-}
-PresentationLayer --> BusinessLogicLayer : Facade Pattern
-BusinessLogicLayer --> PersistenceLayer : Database Operations
+- The three main architectural layers
+- The responsibilities of each layer
+- Communication through the Facade
 
+### 📄 Deliverables
+- A clearly organized package diagram (using a tool of your choice)
+- Explanatory notes describing each layer and their interactions
 
-📝 Explanatory Notes
-Presentation Layer exposes services to the client.
-Business Logic Layer applies domain rules via models.
-Persistence Layer abstracts data handling.
-The Facade simplifies and centralizes logic exposure.
-🧱 Task 1: Detailed Class Diagram for Business Logic Layer
+---
 
-✅ Objective
-Define entities and their relationships in the core logic of the application.
+## 🔍 Task 1: Detailed Class Diagram (Business Logic Layer)
 
+### ✅ Objective
+Document the internal structure of the core models: `User`, `Place`, `Review`, and `Amenity`.
 
-🖼️ Example Class Diagram (Mermaid.js)
-classDiagram
-class User {
-    +UUID id
-    +str first_name
-    +str last_name
-    +str email
-    +str password
-    +bool is_admin
-    +datetime created_at
-    +datetime updated_at
-}
+### 📝 Requirements
+- Include all attributes and methods for each entity
+- Show relationships: ownership, associations, compositions, etc.
+- Ensure all entities track unique `id`, `created_at`, and `updated_at`
 
-class Place {
-    +UUID id
-    +str title
-    +str description
-    +float price
-    +float latitude
-    +float longitude
-    +datetime created_at
-    +datetime updated_at
-}
+### 📄 Deliverables
+- A class diagram that visually represents each entity and their relationships
+- Brief descriptions of each class, its purpose, and its core behavior
 
-class Review {
-    +UUID id
-    +int rating
-    +str comment
-    +datetime created_at
-    +datetime updated_at
-}
+---
 
-class Amenity {
-    +UUID id
-    +str name
-    +str description
-    +datetime created_at
-    +datetime updated_at
-}
+## 🔄 Task 2: Sequence Diagrams for API Calls
 
-User "1" --> "0..*" Place : owns >
-Place "1" --> "0..*" Review : has >
-User "1" --> "0..*" Review : writes >
-Place "1" --> "*" Amenity : includes >
+### ✅ Objective
+Create sequence diagrams that show the full flow of at least **four** critical API operations across layers.
 
+### 🧪 Required API Scenarios
+1. **User Registration** – Sign up flow for new users
+2. **Place Creation** – How a user creates a new property
+3. **Review Submission** – Submitting a review for a place
+4. **Fetching Places** – Getting a list of available places
 
-📝 Notes
-Entities include both identity fields and timestamp tracking
-Relationships reflect ownership and interactions:
-A user can own multiple places
-Places can include multiple amenities
-Reviews are linked to both user and place
+### 📄 Deliverables
+- Four separate sequence diagrams
+- Descriptions for each API flow, highlighting layer interactions and data flow
 
+---
 
-🔄 Task 2: Sequence Diagrams for API Calls
+## 📑 Task 3: Documentation Compilation
 
-✅ Objective
-Visualize interaction flows across layers for major API calls.
+### ✅ Objective
+Combine all previous deliverables into a **comprehensive technical document**.
 
-📌 Diagrams (Mermaid.js)
-1. User Registration
+### 🗂 Structure
+- **Introduction**: Project goals and documentation purpose
+- **Architecture Overview**: Package diagram + descriptions
+- **Business Logic Design**: Class diagram + entity explanations
+- **API Workflow**: Sequence diagrams + API call descriptions
 
+### 📄 Final Deliverable
+- A complete technical document in PDF, Markdown, or Word format
+- Clear, organized, and easy to reference throughout implementation
 
-sequenceDiagram
-participant Client
-participant API
-participant Facade
-participant Repo
+---
 
-Client->>API: POST /users
-API->>Facade: create_user(data)
-Facade->>Repo: add(user)
-Repo-->>Facade: success
-Facade-->>API: return user
-API-->>Client: 201 Created
+## 🔗 Resources
 
+- UML Basics: Class, Sequence, and Package Diagrams
+- [draw.io](https://draw.io)
+- [Mermaid.js](https://mermaid.js.org)
+- [UML Class Diagram Tutorial](https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-class-diagram-tutorial/)
+- [Facade Design Pattern](https://refactoring.guru/design-patterns/facade)
 
-2. Place Creation
+---
 
+## 🎯 Expected Outcome
 
-sequenceDiagram
-participant Client
-participant API
-participant Facade
-participant Repo
+At the end of this phase, you will have a complete set of well-documented technical assets that:
 
-Client->>API: POST /places
-API->>Facade: create_place(data)
-Facade->>Repo: add(place)
-Repo-->>Facade: success
-Facade-->>API: return place
-API-->>Client: 201 Created
+- Clearly define system components and their roles
+- Explain how data flows from users to storage
+- Guide the structured implementation of the HBnB Evolution project
 
+This document is intended to ensure maintainability, clarity, and a consistent development experience across teams.
 
-3. Review Submission
+---
 
+## 🧠 Recommendations
 
-sequenceDiagram
-participant Client
-participant API
-participant Facade
-participant Repo
+- Begin with simple drafts and improve iteratively
+- Follow consistent naming and diagramming conventions
+- Focus on clarity—diagrams and documentation should be understandable by all team members
+- Get feedback before finalizing
 
-Client->>API: POST /reviews
-API->>Facade: create_review(data)
-Facade->>Repo: add(review)
-Repo-->>Facade: success
-Facade-->>API: return review
-API-->>Client: 201 Created
+---
 
+## 📁 Repository Location
 
-4. Fetch List of Places
-
-
-sequenceDiagram
-participant Client
-participant API
-participant Facade
-participant Repo
-
-Client->>API: GET /places
-API->>Facade: get_all_places()
-Facade->>Repo: list()
-Repo-->>Facade: [place1, place2, ...]
-Facade-->>API: return list
-API-->>Client: 200 OK
-
-
-📑 Task 3: Documentation Compilation
-
-✅ Objective
-Compile all deliverables into one complete reference for development.
-
-📘 Contents
-Introduction: Goals and scope of documentation
-Architecture: Overview of system design
-Class Diagram: Core entities and their structure
-Sequence Diagrams: How data flows for key use cases
-📌 Tools & Formats
-Diagrams: Mermaid.js, draw.io (optional)
-Format: Markdown for source, export to PDF if needed
-
-
-🔗 Resources
-
-UML Class Diagram Tutorial
-UML Sequence Diagrams
-Facade Pattern Guide
-Mermaid.js Docs
-
-
-✅ Expected Outcome
-
-A comprehensive, professional technical document that:
-
-Explains system architecture clearly
-Includes detailed UML diagrams for logic and flow
-Enables a seamless transition to implementation
 
 
 📁 Repository Structure
@@ -270,6 +164,3 @@ holbertonschool-hbnb/
     │   └── sequence_diagrams.mmd
     ├── README.md
     └── documentation.pdf
-
-
-
