@@ -1,5 +1,6 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
+from app.models.amenity import Amenity
 
 
 class HBnBFacade:
@@ -38,6 +39,24 @@ class HBnBFacade:
             self.user_repo.update(user_id, user_data)
             return user
         return None
+
+    def create_amenity(self, amenity_data):
+        """Create a new amenity and store in the repository."""
+        amenity = Amenity(**amenity_data)
+        self.amenity_repo.add(amenity)
+        return amenity
+
+    def get_amenity(self, amenity_id):
+        """Retrieve an amenity by ID."""
+        return self.amenity_repo.get(amenity_id)
+
+    def get_all_amenities(self):
+        """Retrieve all amenities."""
+        return self.amenity_repo.get_all()
+
+    def update_amenity(self, amenity_id, amenity_data):
+        # Placeholder for logic to update an amenity
+        pass
 
     # Placeholder method for fetching a place by ID
     def get_place(self, place_id):
