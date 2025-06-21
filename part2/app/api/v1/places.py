@@ -39,27 +39,32 @@ class PlaceList(Resource):
     def post(self):
         """Register a new place"""
         place_data = api.payload
-        
+
         try:
             # Validate required fields
-            required_fields = ['title', 'price', 'latitude', 'longitude', 'owner_id']
+            required_fields = ['title', 'price', 'latitude', 'longitude',
+                               'owner_id']
             for field in required_fields:
                 if field not in place_data or place_data[field] is None:
                     return {'error': f'Missing required field: {field}'}, 400
-            
+
             # Validate data types and ranges
-            if not isinstance(place_data['price'], (int, float)) or place_data['price'] <= 0:
+            if (not isinstance(place_data['price'], (int, float)) or
+                    place_data['price'] <= 0):
                 return {'error': 'Price must be a positive number'}, 400
-                
-            if not isinstance(place_data['latitude'], (int, float)) or not (-90 <= place_data['latitude'] <= 90):
+
+            if (not isinstance(place_data['latitude'], (int, float)) or
+                    not (-90 <= place_data['latitude'] <= 90)):
                 return {'error': 'Latitude must be between -90 and 90'}, 400
-                
-            if not isinstance(place_data['longitude'], (int, float)) or not (-180 <= place_data['longitude'] <= 180):
-                return {'error': 'Longitude must be between -180 and 180'}, 400
-            
+
+            if (not isinstance(place_data['longitude'], (int, float)) or
+                    not (-180 <= place_data['longitude'] <= 180)):
+                return {'error':
+                        'Longitude must be between -180 and 180'}, 400
+
             # Create the place using the facade
             new_place = facade.create_place(place_data)
-            
+
             return {
                 'id': new_place.id,
                 'title': new_place.name,  # Map name back to title
@@ -72,7 +77,6 @@ class PlaceList(Resource):
                 'created_at': new_place.created_at.isoformat(),
                 'updated_at': new_place.updated_at.isoformat()
             }, 201
-            
         except ValueError as e:
             return {'error': str(e)}, 400
         except Exception as e:
@@ -95,7 +99,6 @@ class PlaceResource(Resource):
             place = facade.get_place(place_id)
             if not place:
                 return {'error': 'Place not found'}, 404
-            
             return {
                 'id': place.id,
                 'title': place.name,  # Map name back to title
@@ -116,7 +119,6 @@ class PlaceResource(Resource):
                 'created_at': place.created_at.isoformat(),
                 'updated_at': place.updated_at.isoformat()
             }, 200
-            
         except Exception as e:
             return {'error': str(e)}, 500
 
@@ -127,32 +129,37 @@ class PlaceResource(Resource):
     def put(self, place_id):
         """Update a place's information"""
         place_data = api.payload
-        
+
         try:
             # Check if place exists
             existing_place = facade.get_place(place_id)
             if not existing_place:
                 return {'error': 'Place not found'}, 404
-            
+
             # Validate data types and ranges if provided
             if 'price' in place_data:
-                if not isinstance(place_data['price'], (int, float)) or place_data['price'] <= 0:
-                    return {'error': 'Price must be a positive number'}, 400
-                    
+                if (not isinstance(place_data['price'], (int, float)) or
+                        place_data['price'] <= 0):
+                    return {'error':
+                            'Price must be a positive number'}, 400
+
             if 'latitude' in place_data:
-                if not isinstance(place_data['latitude'], (int, float)) or not (-90 <= place_data['latitude'] <= 90):
-                    return {'error': 'Latitude must be between -90 and 90'}, 400
-                    
+                if (not isinstance(place_data['latitude'], (int, float)) or
+                        not (-90 <= place_data['latitude'] <= 90)):
+                    return {'error':
+                            'Latitude must be between -90 and 90'}, 400
+
             if 'longitude' in place_data:
-                if not isinstance(place_data['longitude'], (int, float)) or not (-180 <= place_data['longitude'] <= 180):
-                    return {'error': 'Longitude must be between -180 and 180'}, 400
-            
+                if (not isinstance(place_data['longitude'], (int, float)) or
+                        not (-180 <= place_data['longitude'] <= 180)):
+                    return {'error':
+                            'Longitude must be between -180 and 180'}, 400
+
             # Update the place using the facade
             updated_place = facade.update_place(place_id, place_data)
-            
+
             if not updated_place:
                 return {'error': 'Place not found'}, 404
-            
             return {
                 'id': updated_place.id,
                 'title': updated_place.name,  # Map name back to title
@@ -173,8 +180,33 @@ class PlaceResource(Resource):
                 'created_at': updated_place.created_at.isoformat(),
                 'updated_at': updated_place.updated_at.isoformat()
             }, 200
-            
+
         except ValueError as e:
             return {'error': str(e)}, 400
         except Exception as e:
             return {'error': str(e)}, 500
+
+
+# Adding the review model
+review_model = api.model('PlaceReview', {
+    'id': fields.String(description='Review ID'),
+    'text': fields.String(description='Text of the review'),
+    'rating': fields.Integer(description='Rating of the place (1-5)'),
+    'user_id': fields.String(description='ID of the user')
+})
+
+place_model = api.model('Place', {
+    'title': fields.String(required=True, description='Title of the place'),
+    'description': fields.String(description='Description of the place'),
+    'price': fields.Float(required=True, description='Price per night'),
+    'latitude': fields.Float(required=True,
+                             description='Latitude of the place'),
+    'longitude': fields.Float(required=True,
+                              description='Longitude of the place'),
+    'owner_id': fields.String(required=True, description='ID of the owner'),
+    'owner': fields.Nested(user_model, description='Owner of the place'),
+    'amenities': fields.List(fields.Nested(amenity_model),
+                             description='List of amenities'),
+    'reviews': fields.List(fields.Nested(review_model),
+                           description='List of reviews')
+})

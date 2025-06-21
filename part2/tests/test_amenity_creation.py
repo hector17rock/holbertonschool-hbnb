@@ -34,7 +34,8 @@ def test_create_amenity():
             print("❌ Failed to create amenity")
             
     except requests.exceptions.ConnectionError:
-        print("❌ Could not connect to the server. Make sure the Flask app is running.")
+        print("❌ Could not connect to the server. "
+              "Make sure the Flask app is running.")
     except Exception as e:
         print(f"❌ Error: {e}")
 
@@ -60,7 +61,8 @@ def test_create_amenity_invalid_data():
             print("❌ Validation not working as expected")
             
     except requests.exceptions.ConnectionError:
-        print("❌ Could not connect to the server. Make sure the Flask app is running.")
+        print("❌ Could not connect to the server. "
+              "Make sure the Flask app is running.")
     except Exception as e:
         print(f"❌ Error: {e}")
 

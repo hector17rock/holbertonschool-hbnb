@@ -5,7 +5,8 @@ from app.models.amenity import Amenity
 
 # Test User creation
 def test_user_creation():
-    user = User(first_name="John", last_name="Doe", email="john.doe@example.com", password="pwd123")
+    user = User(first_name="John", last_name="Doe",
+                email="john.doe@example.com", password="pwd123")
     assert user.first_name == "John"
     assert user.last_name == "Doe"
     assert user.email == "john.doe@example.com"
@@ -20,8 +21,10 @@ def test_amenity_creation():
 
 # Test Place and Review relationships
 def test_place_creation_and_relationships():
-    owner = User(first_name="Alice", last_name="Smith", email="alice@example.com")
-    place = Place(name="Ocean View", description="Nice place by the beach", price=200,
+    owner = User(first_name="Alice", last_name="Smith",
+                 email="alice@example.com")
+    place = Place(name="Ocean View",
+                  description="Nice place by the beach", price=200,
                   latitude=25.7617, longitude=-80.1918, owner=owner)
 
     # Test place properties

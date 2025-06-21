@@ -41,7 +41,8 @@ def update_user(user_id):
     }
     
     try:
-        response = requests.put(f"{BASE_URL}{user_id}", json=update_data, timeout=5)
+        response = requests.put(f"{BASE_URL}/users/{user_id}",
+                                json=updated_data)
         print(f"Status Code: {response.status_code}")
         if response.status_code == 200:
             updated_user = response.json()
@@ -84,7 +85,8 @@ def test_update_nonexistent_user():
     }
     
     try:
-        response = requests.put(f"{BASE_URL}{fake_id}", json=update_data, timeout=5)
+        response = requests.put(f"{BASE_URL}/users/{user_id}",
+                                json=updated_data)
         print(f"Status Code: {response.status_code}")
         print(f"Response: {response.json()}")
         return response.status_code == 404
@@ -118,7 +120,8 @@ def test_duplicate_email_update(user_id):
             "email": "bob.wilson@example.com"  # This should fail
         }
         
-        response = requests.put(f"{BASE_URL}{user_id}", json=update_data, timeout=5)
+        response = requests.put(f"{BASE_URL}/users/{user_id}",
+                                json=duplicate_data)
         print(f"Status Code: {response.status_code}")
         print(f"Response: {response.json()}")
         return response.status_code == 400

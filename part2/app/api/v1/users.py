@@ -20,7 +20,8 @@ class UserList(Resource):
         """Retrieve a list of all users"""
         users = facade.get_all_users()
         return [{'id': user.id, 'first_name': user.first_name,
-                'last_name': user.last_name, 'email': user.email} for user in users], 200
+                 'last_name': user.last_name,
+                 'email': user.email} for user in users], 200
 
     @api.expect(user_model, validate=True)
     @api.response(201, 'User successfully created')
@@ -74,5 +75,7 @@ class UserResource(Resource):
         
         # Update the user
         updated_user = facade.update_user(user_id, user_data)
-        return {'id': updated_user.id, 'first_name': updated_user.first_name,
-                'last_name': updated_user.last_name, 'email': updated_user.email}, 200
+        return {'id': updated_user.id,
+                'first_name': updated_user.first_name,
+                'last_name': updated_user.last_name,
+                'email': updated_user.email}, 200

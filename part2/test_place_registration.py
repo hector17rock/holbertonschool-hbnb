@@ -54,17 +54,20 @@ def test_place_registration():
         amenities = []
         for amenity_name in ["WiFi", "Pool", "Parking"]:
             amenity_data = {"name": amenity_name}
-            response = requests.post(f"{base_url}/amenities/", json=amenity_data)
+            response = requests.post(f"{base_url}/amenities/",
+                                     json=amenity_data)
             if response.status_code == 201:
                 amenity = response.json()
                 amenities.append(amenity['id'])
-                print(f"Created amenity '{amenity_name}' with ID: {amenity['id']}")
+                print(f"   Created amenity '{amenity_name}' with "
+                      f"ID: {amenity['id']}")
         
         # Now create a place
         print("\n3. Creating a place...")
         place_data = {
             "title": "Beautiful Beach House",
-            "description": "A lovely house by the beach with stunning ocean views",
+            "description": "A lovely house by the beach with "
+                          "stunning ocean views",
             "price": 150.0,
             "latitude": 34.0522,
             "longitude": -118.2437,
