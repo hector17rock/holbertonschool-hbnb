@@ -13,9 +13,18 @@ user_model = api.model('User', {
     'password': fields.String(required=True, description='Password of the user')
 })
 
+# Define the user response model (excludes password for security)
+user_response_model = api.model('UserResponse', {
+    'id': fields.String(required=True, description='Unique identifier of the user'),
+    'first_name': fields.String(required=True, description='First name of the user'),
+    'last_name': fields.String(required=True, description='Last name of the user'),
+    'email': fields.String(required=True, description='Email of the user')
+})
+
 
 @api.route('/')
 class UserList(Resource):
+    @api.marshal_list_with(user_response_model)
     @api.response(200, 'List of users retrieved successfully')
     def get(self):
         """Retrieve a list of all users"""
@@ -44,10 +53,11 @@ class UserList(Resource):
 
 @api.route('/<user_id>')
 class UserResource(Resource):
-    @api.response(200, 'User details retreived successfully')
+    @api.marshal_with(user_response_model)
+    @api.response(200, 'User details retrieved successfully')
     @api.response(404, 'User not found')
     def get(self, user_id):
-        """Get usr details by id"""
+        """Get user details by id"""
         user = facade.get_user(user_id)
         if not user:
             return {'error': 'User not found'}, 404
@@ -55,6 +65,7 @@ class UserResource(Resource):
                 'last_name': user.last_name, 'email': user.email}, 200
 
     @api.expect(user_model, validate=True)
+    @api.marshal_with(user_response_model)
     @api.response(200, 'User successfully updated')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input data')

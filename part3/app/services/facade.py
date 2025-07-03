@@ -41,6 +41,14 @@ class HBnBFacade:
         """Update a user's information."""
         user = self.user_repo.get(user_id)
         if user:
+            # Hash password if provided
+            if 'password' in user_data:
+                user.hash_password(user_data['password'])
+                # Remove password from user_data to avoid storing it twice
+                user_data_copy = user_data.copy()
+                del user_data_copy['password']
+                user_data = user_data_copy
+            
             self.user_repo.update(user_id, user_data)
             return user
         return None
