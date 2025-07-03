@@ -13,21 +13,24 @@ class TestUserEndpoints(unittest.TestCase):
         response = self.client.post('/api/v1/users/', json={
             "first_name": "Jane",
             "last_name": "Doe",
-            "email": "jane.doe@example.com"
+            "email": "jane.doe@example.com",
+            "password": "securePassword123"
         })
         self.assertEqual(response.status_code, 201)
         data = response.get_json()
         self.assertIn('id', data)
-        self.assertEqual(data['first_name'], 'Jane')
-        self.assertEqual(data['last_name'], 'Doe')
-        self.assertEqual(data['email'], 'jane.doe@example.com')
+        self.assertIn('message', data)
+        self.assertEqual(data['message'], 'User successfully created')
+        # Verify password is not returned in response
+        self.assertNotIn('password', data)
 
     def test_create_user_empty_fields(self):
         """Test creating a user with empty first and last names"""
         response = self.client.post('/api/v1/users/', json={
             "first_name": "",
             "last_name": "",
-            "email": "test@example.com"
+            "email": "test@example.com",
+            "password": "testPassword123"
         })
         print(f"Empty fields response: {response.status_code}, {response.get_json()}")
         # Currently passes - this reveals the validation gap
@@ -38,7 +41,8 @@ class TestUserEndpoints(unittest.TestCase):
         response = self.client.post('/api/v1/users/', json={
             "first_name": "John",
             "last_name": "Doe",
-            "email": "invalid-email"
+            "email": "invalid-email",
+            "password": "testPassword123"
         })
         print(f"Invalid email response: {response.status_code}, {response.get_json()}")
         # Currently passes - this reveals the validation gap
@@ -60,7 +64,8 @@ class TestUserEndpoints(unittest.TestCase):
         response1 = self.client.post('/api/v1/users/', json={
             "first_name": "First",
             "last_name": "User",
-            "email": email
+            "email": email,
+            "password": "password123"
         })
         self.assertEqual(response1.status_code, 201)
         
@@ -68,7 +73,8 @@ class TestUserEndpoints(unittest.TestCase):
         response2 = self.client.post('/api/v1/users/', json={
             "first_name": "Second",
             "last_name": "User",
-            "email": email
+            "email": email,
+            "password": "password456"
         })
         self.assertEqual(response2.status_code, 400)
         data = response2.get_json()

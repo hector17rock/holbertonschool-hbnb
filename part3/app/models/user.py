@@ -16,12 +16,10 @@ class User(BaseModel):
 
     def hash_password(self, password):
         """Hashes the password before storing it."""
-        from flask import current_app
-        bcrypt = current_app.extensions['bcrypt']
+        from app import bcrypt
         self.password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def verify_password(self, password):
         """Verifies if the provided password matches the hashed password."""
-        from flask import current_app
-        bcrypt = current_app.extensions['bcrypt']
+        from app import bcrypt
         return bcrypt.check_password_hash(self.password, password)
