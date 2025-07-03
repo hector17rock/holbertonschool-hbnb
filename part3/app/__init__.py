@@ -17,3 +17,9 @@ def create_app():
     api.add_namespace(places_ns, path='/api/v1/places')
     api.add_namespace(reviews_ns, path='/api/v1/reviews')
     return app
+
+
+def create_app(config_class="config.DevelopmentConfig"):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+    # ...
