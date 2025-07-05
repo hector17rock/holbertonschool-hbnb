@@ -132,8 +132,9 @@ class ReviewResource(Resource):
             if existing_review.user.id != current_user_id and not is_admin:
                 return {'error': 'Unauthorized action'}, 403
 
-            # Override user_id to ensure it stays the same
-            review_data['user_id'] = current_user_id
+            # Preserve original author (don't change user_id when admin modifies)
+            if 'user_id' in review_data:
+                del review_data['user_id']
 
             updated_review = facade.update_review(review_id, review_data)
             if not updated_review:
