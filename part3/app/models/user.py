@@ -9,7 +9,7 @@ class User(BaseModel):
         self.email = email
         self.password = password
         self.is_admin = is_admin
-        self.places = []  # Lst places
+        self.places = []  # List of places
 
     def add_place(self, place):
         if place and place.owner == self:

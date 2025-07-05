@@ -10,7 +10,7 @@ class BaseModel:
 
     def save(self):
         """Update the updated_at timestamp whenever the object is modified."""
-        self.updated_at = datetime.now()
+        self.updated_at = datetime.utcnow()
 
     def update(self, data):
         """Update the attributes of the object based on a provided dict."""
