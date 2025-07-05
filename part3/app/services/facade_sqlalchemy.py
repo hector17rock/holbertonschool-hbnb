@@ -49,7 +49,7 @@ class HBnBFacade:
                 user_data_copy = user_data.copy()
                 del user_data_copy['password']
                 user_data = user_data_copy
-            
+
             self.user_repo.update(user_id, user_data)
             return user
         return None
@@ -84,7 +84,7 @@ class HBnBFacade:
         owner = self.user_repo.get(place_data['owner_id'])
         if not owner:
             raise ValueError("Owner not found")
-        
+
         # Validate amenities exist
         amenities = []
         for amenity_id in place_data.get('amenities', []):
@@ -92,7 +92,7 @@ class HBnBFacade:
             if not amenity:
                 raise ValueError(f"Amenity {amenity_id} not found")
             amenities.append(amenity)
-        
+
         # Create place with name instead of title to match model
         place = Place(
             name=place_data['title'],  # Map title to name
@@ -102,11 +102,11 @@ class HBnBFacade:
             longitude=place_data['longitude'],
             owner=owner
         )
-        
+
         # Add amenities
         for amenity in amenities:
             place.add_amenity(amenity)
-        
+
         self.place_repo.add(place)
         return place
 
@@ -123,14 +123,14 @@ class HBnBFacade:
         place = self.place_repo.get(place_id)
         if not place:
             return None
-            
+
         # Validate owner if provided
         if 'owner_id' in place_data:
             owner = self.user_repo.get(place_data['owner_id'])
             if not owner:
                 raise ValueError("Owner not found")
             place.owner = owner
-            
+
         # Validate amenities if provided
         if 'amenities' in place_data:
             amenities = []
@@ -140,7 +140,7 @@ class HBnBFacade:
                     raise ValueError(f"Amenity {amenity_id} not found")
                 amenities.append(amenity)
             place.amenities = amenities
-            
+
         # Update other fields
         if 'title' in place_data:
             place.name = place_data['title']  # Map title to name
@@ -152,7 +152,7 @@ class HBnBFacade:
             place.latitude = place_data['latitude']
         if 'longitude' in place_data:
             place.longitude = place_data['longitude']
-            
+
         # Update the place in the repository
         self.place_repo.update(place_id, place_data)
         return place
@@ -199,7 +199,8 @@ class HBnBFacade:
         # This will need to be implemented with proper SQLAlchemy filtering
         # For now, placeholder implementation
         all_reviews = self.review_repo.get_all()
-        return [review for review in all_reviews if review.place.id == place_id]
+        return [review for review in all_reviews
+                if review.place.id == place_id]
 
     def update_review(self, review_id, review_data):
         """Update a review's information."""

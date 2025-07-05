@@ -28,7 +28,7 @@ class UserRepository(SQLAlchemyRepository):
         # Check if email already exists
         if self.email_exists(user_data['email']):
             raise ValueError("Email already exists")
-        
+
         # Create user instance
         user = User(
             first_name=user_data['first_name'],
@@ -37,7 +37,7 @@ class UserRepository(SQLAlchemyRepository):
             password=user_data['password'],
             is_admin=user_data.get('is_admin', False)
         )
-        
+
         # Add to database
         self.add(user)
         return user

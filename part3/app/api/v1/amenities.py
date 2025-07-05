@@ -27,15 +27,15 @@ class AmenityList(Resource):
             return {'error': 'Admin privileges required'}, 403
 
         amenity_data = api.payload
-        
+
         # Validate required fields
         if not amenity_data or 'name' not in amenity_data:
             return {'error': 'Missing required field: name'}, 400
-        
+
         # Validate name is not empty
         if not amenity_data['name'].strip():
             return {'error': 'Name cannot be empty'}, 400
-        
+
         try:
             # Create the amenity using the facade
             new_amenity = facade.create_amenity(amenity_data)
@@ -76,7 +76,7 @@ class AmenityResource(Resource):
             amenity = facade.get_amenity(amenity_id)
             if not amenity:
                 return {'error': 'Amenity not found'}, 404
-            
+
             return {
                 'id': amenity.id,
                 'name': amenity.name,
@@ -100,20 +100,20 @@ class AmenityResource(Resource):
             return {'error': 'Admin privileges required'}, 403
 
         amenity_data = api.payload
-        
+
         # Validate required fields
         if not amenity_data or 'name' not in amenity_data:
             return {'error': 'Missing required field: name'}, 400
-        
+
         # Validate name is not empty
         if not amenity_data['name'].strip():
             return {'error': 'Name cannot be empty'}, 400
-        
+
         # Check if amenity exists
         amenity = facade.get_amenity(amenity_id)
         if not amenity:
             return {'error': 'Amenity not found'}, 404
-        
+
         try:
             # Update the amenity using the facade
             updated_amenity = facade.update_amenity(amenity_id, amenity_data)

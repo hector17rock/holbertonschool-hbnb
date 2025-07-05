@@ -132,7 +132,8 @@ class ReviewResource(Resource):
             if existing_review.user.id != current_user_id and not is_admin:
                 return {'error': 'Unauthorized action'}, 403
 
-            # Preserve original author (don't change user_id when admin modifies)
+            # Preserve original author
+            # (don't change user_id when admin modifies)
             if 'user_id' in review_data:
                 del review_data['user_id']
 

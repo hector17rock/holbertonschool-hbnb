@@ -34,7 +34,7 @@ class HBnBFacade:
                 user_data_copy = user_data.copy()
                 del user_data_copy['password']
                 user_data = user_data_copy
-            
+
             self.user_repo.update(user_id, user_data)
             return user
         return None
@@ -50,56 +50,70 @@ class HBnBFacade:
     # Placeholder methods for other entities (to be implemented later)
     def create_amenity(self, amenity_data):
         """Create a new amenity - placeholder for now."""
-        raise NotImplementedError("Amenity operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Amenity operations not yet implemented with SQLAlchemy")
 
     def get_amenity(self, amenity_id):
         """Get amenity by ID - placeholder for now."""
-        raise NotImplementedError("Amenity operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Amenity operations not yet implemented with SQLAlchemy")
 
     def get_all_amenities(self):
         """Get all amenities - placeholder for now."""
-        raise NotImplementedError("Amenity operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Amenity operations not yet implemented with SQLAlchemy")
 
     def update_amenity(self, amenity_id, amenity_data):
         """Update amenity - placeholder for now."""
-        raise NotImplementedError("Amenity operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Amenity operations not yet implemented with SQLAlchemy")
 
     def create_place(self, place_data):
         """Create a new place - placeholder for now."""
-        raise NotImplementedError("Place operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Place operations not yet implemented with SQLAlchemy")
 
     def get_place(self, place_id):
         """Get place by ID - placeholder for now."""
-        raise NotImplementedError("Place operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Place operations not yet implemented with SQLAlchemy")
 
     def get_all_places(self):
         """Get all places - placeholder for now."""
-        raise NotImplementedError("Place operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Place operations not yet implemented with SQLAlchemy")
 
     def update_place(self, place_id, place_data):
         """Update place - placeholder for now."""
-        raise NotImplementedError("Place operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Place operations not yet implemented with SQLAlchemy")
 
     def create_review(self, review_data):
         """Create a new review - placeholder for now."""
-        raise NotImplementedError("Review operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Review operations not yet implemented with SQLAlchemy")
 
     def get_review(self, review_id):
         """Get review by ID - placeholder for now."""
-        raise NotImplementedError("Review operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Review operations not yet implemented with SQLAlchemy")
 
     def get_all_reviews(self):
         """Get all reviews - placeholder for now."""
-        raise NotImplementedError("Review operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Review operations not yet implemented with SQLAlchemy")
 
     def get_reviews_by_place(self, place_id):
         """Get reviews by place - placeholder for now."""
-        raise NotImplementedError("Review operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Review operations not yet implemented with SQLAlchemy")
 
     def update_review(self, review_id, review_data):
         """Update review - placeholder for now."""
-        raise NotImplementedError("Review operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Review operations not yet implemented with SQLAlchemy")
 
     def delete_review(self, review_id):
         """Delete review - placeholder for now."""
-        raise NotImplementedError("Review operations not yet implemented with SQLAlchemy")
+        raise NotImplementedError(
+            "Review operations not yet implemented with SQLAlchemy")

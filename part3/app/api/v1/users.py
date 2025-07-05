@@ -49,7 +49,7 @@ class UserList(Resource):
         """Register a new user"""
         # Check if there are any existing users
         existing_users = facade.get_all_users()
-        
+
         # If there are no users yet, allow creation of first admin user
         if len(existing_users) == 0:
             user_data = api.payload
@@ -64,9 +64,9 @@ class UserList(Resource):
                 current_user = json.loads(current_user_identity)
                 if not current_user.get('is_admin'):
                     return {'error': 'Admin privileges required'}, 403
-            except:
+            except Exception:
                 return {'error': 'Admin privileges required'}, 403
-            
+
             user_data = api.payload
 
         # Simulate email uniqueness check (to be replaced by real

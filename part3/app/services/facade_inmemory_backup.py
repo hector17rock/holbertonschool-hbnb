@@ -49,7 +49,7 @@ class HBnBFacade:
                 user_data_copy = user_data.copy()
                 del user_data_copy['password']
                 user_data = user_data_copy
-            
+
             self.user_repo.update(user_id, user_data)
             return user
         return None
