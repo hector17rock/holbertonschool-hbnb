@@ -1,5 +1,7 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
+import json
 
 api = Namespace('users', description='User operations')
 
@@ -10,14 +12,18 @@ user_model = api.model('User', {
     'last_name': fields.String(required=True,
                                description='Last name of the user'),
     'email': fields.String(required=True, description='Email of the user'),
-    'password': fields.String(required=True, description='Password of the user')
+    'password': fields.String(required=True,
+                              description='Password of the user')
 })
 
 # Define the user response model (excludes password for security)
 user_response_model = api.model('UserResponse', {
-    'id': fields.String(required=True, description='Unique identifier of the user'),
-    'first_name': fields.String(required=True, description='First name of the user'),
-    'last_name': fields.String(required=True, description='Last name of the user'),
+    'id': fields.String(required=True,
+                        description='Unique identifier of the user'),
+    'first_name': fields.String(required=True,
+                                description='First name of the user'),
+    'last_name': fields.String(required=True,
+                               description='Last name of the user'),
     'email': fields.String(required=True, description='Email of the user')
 })
 
@@ -64,27 +70,41 @@ class UserResource(Resource):
         return {'id': user.id, 'first_name': user.first_name,
                 'last_name': user.last_name, 'email': user.email}, 200
 
-    @api.expect(user_model, validate=True)
-    @api.marshal_with(user_response_model)
+    @jwt_required()
+    @api.expect(user_model)
     @api.response(200, 'User successfully updated')
     @api.response(404, 'User not found')
     @api.response(400, 'Invalid input data')
+    @api.response(401, 'Authentication required')
+    @api.response(403, 'Forbidden - Can only modify own profile')
     def put(self, user_id):
         """Update a user's information"""
+        # Get current user identity from JWT token
+        current_user_identity = get_jwt_identity()
+        current_user_data = json.loads(current_user_identity)
+        current_user_id = current_user_data['id']
+
+        # Check if current user is trying to modify their own profile
+        if current_user_id != user_id:
+            return {'error': 'Unauthorized action'}, 403
+
         user_data = api.payload
-        
+
+        # Check if user is trying to modify email or password
+        if 'email' in user_data or 'password' in user_data:
+            return {'error': 'You cannot modify email or password'}, 400
+
+        # Remove email and password from update data for security
+        restricted_fields = ['email', 'password']
+        for field in restricted_fields:
+            if field in user_data:
+                del user_data[field]
+
         # Check if user exists
         user = facade.get_user(user_id)
         if not user:
             return {'error': 'User not found'}, 404
-        
-        # Check if email is being changed and if new email is already taken
-        if 'email' in user_data and user_data['email'] != user.email:
-            existing_user = facade.get_user_by_email(user_data['email'])
-            if existing_user:
-                return {'error': 'Email already registered'}, 400
-        
-        # Update the user
+        # Update the user (email and password changes are not allowed)
         updated_user = facade.update_user(user_id, user_data)
         return {'id': updated_user.id,
                 'first_name': updated_user.first_name,
