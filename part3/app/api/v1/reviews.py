@@ -127,8 +127,9 @@ class ReviewResource(Resource):
             if not existing_review:
                 return {'error': 'Review not found'}, 404
 
-            # Check if current user is the author of the review
-            if existing_review.user.id != current_user_id:
+            # Check if current user is the author of the review or an admin
+            is_admin = current_user_data.get('is_admin', False)
+            if existing_review.user.id != current_user_id and not is_admin:
                 return {'error': 'Unauthorized action'}, 403
 
             # Override user_id to ensure it stays the same
@@ -169,8 +170,9 @@ class ReviewResource(Resource):
             if not existing_review:
                 return {'error': 'Review not found'}, 404
 
-            # Check if current user is the author of the review
-            if existing_review.user.id != current_user_id:
+            # Check if current user is the author of the review or an admin
+            is_admin = current_user_data.get('is_admin', False)
+            if existing_review.user.id != current_user_id and not is_admin:
                 return {'error': 'Unauthorized action'}, 403
 
             # Delete the review using the facade

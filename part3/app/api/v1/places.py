@@ -156,8 +156,9 @@ class PlaceResource(Resource):
             if not existing_place:
                 return {'error': 'Place not found'}, 404
 
-            # Check if current user is the owner of the place
-            if existing_place.owner.id != current_user_id:
+            # Check if current user is the owner of the place or an admin
+            is_admin = current_user_data.get('is_admin', False)
+            if existing_place.owner.id != current_user_id and not is_admin:
                 return {'error': 'Unauthorized action'}, 403
 
             # Validate data types and ranges if provided

@@ -16,7 +16,8 @@ class HBnBFacade:
         """Create new usr and store in the repo."""
         user = User(first_name=user_data['first_name'],
                     last_name=user_data['last_name'],
-                    email=user_data['email'])
+                    email=user_data['email'],
+                    is_admin=user_data.get('is_admin', False))
         user.hash_password(user_data['password'])
         self.user_repo.add(user)
         return user
@@ -68,8 +69,12 @@ class HBnBFacade:
         return self.amenity_repo.get_all()
 
     def update_amenity(self, amenity_id, amenity_data):
-        # Placeholder for logic to update an amenity
-        pass
+        """Update an amenity's information."""
+        amenity = self.amenity_repo.get(amenity_id)
+        if amenity:
+            self.amenity_repo.update(amenity_id, amenity_data)
+            return amenity
+        return None
 
     def create_place(self, place_data):
         """Create a new place and store in the repository."""
