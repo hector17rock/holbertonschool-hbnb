@@ -1,6 +1,14 @@
 from .base_model import BaseModel
-from sqlalchemy import Column, String, Float, Text
+from sqlalchemy import Column, String, Float, Text, ForeignKey, Table
+from sqlalchemy.orm import relationship
 
+
+# Association table for many-to-many relationship between Place and Amenity
+place_amenity_association = Table(
+    'place_amenity', BaseModel.metadata,
+    Column('place_id', String(36), ForeignKey('places.id'), primary_key=True),
+    Column('amenity_id', String(36), ForeignKey('amenities.id'), primary_key=True)
+)
 
 class Place(BaseModel):
     """Place model representing a place/property."""
@@ -12,6 +20,12 @@ class Place(BaseModel):
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
 
+    # ForeignKey and relationship
+    owner_id = Column(String(36), ForeignKey('users.id'), nullable=False)
+    reviews = relationship('Review', backref='place', lazy=True, cascade='all, delete-orphan')
+    amenities = relationship('Amenity', secondary=place_amenity_association, lazy='subquery',
+                             backref='places', cascade='all')
+
     def __init__(self, title="", description="", price=0.0, latitude=0.0,
                  longitude=0.0, **kwargs):
         """Initialize a Place instance."""
@@ -21,12 +35,6 @@ class Place(BaseModel):
         self.price = price
         self.latitude = latitude
         self.longitude = longitude
-        # Note: owner, reviews, and amenities relationships will be added later
-        # For now, we'll keep the list-based approach for compatibility
-        if not hasattr(self, 'reviews'):
-            self.reviews = []
-        if not hasattr(self, 'amenities'):
-            self.amenities = []
 
     def add_reviews(self, review):
         """Add a review to this place."""

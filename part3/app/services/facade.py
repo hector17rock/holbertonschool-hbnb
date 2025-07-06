@@ -85,19 +85,17 @@ class HBnBFacade:
             if not amenity:
                 raise ValueError(f"Amenity {amenity_id} not found")
             amenities.append(amenity)
-        # Create place with title (relationships will be added later)
+        # Create place with owner relationship
         place = Place(
             title=place_data['title'],
             description=place_data.get('description', ''),
             price=place_data['price'],
             latitude=place_data['latitude'],
-            longitude=place_data['longitude']
+            longitude=place_data['longitude'],
+            owner_id=owner.id
         )
-        # For now, store owner as attribute (relationships will be added later)
-        place.owner = owner
-        # Add amenities
-        for amenity in amenities:
-            place.add_amenity(amenity)
+        # Add amenities using the relationship
+        place.amenities = amenities
         self.place_repo.add(place)
         return place
 
@@ -119,7 +117,7 @@ class HBnBFacade:
             owner = self.user_repo.get(place_data['owner_id'])
             if not owner:
                 raise ValueError("Owner not found")
-            place.owner = owner
+            place.owner_id = owner.id
         # Validate amenities if provided
         if 'amenities' in place_data:
             amenities = []
@@ -161,14 +159,13 @@ class HBnBFacade:
         if not isinstance(rating, int) or rating < 1 or rating > 5:
             raise ValueError("Rating must be an integer between 1 and 5")
 
-        # Create review (relationships will be added later)
+        # Create review with foreign key relationships
         review = Review(
             text=review_data.get('text', ''),
-            rating=rating
+            rating=rating,
+            user_id=user.id,
+            place_id=place.id
         )
-        # For now, store user and place as attributes (relationships will be added later)
-        review.user = user
-        review.place = place
 
         self.review_repo.add(review)
         return review
@@ -183,9 +180,11 @@ class HBnBFacade:
 
     def get_reviews_by_place(self, place_id):
         """Retrieve all reviews for a specific place."""
-        # For now, we'll filter reviews manually since relationships aren't implemented yet
-        all_reviews = self.review_repo.get_all()
-        return [review for review in all_reviews if hasattr(review, 'place') and review.place and review.place.id == place_id]
+        # Use SQLAlchemy relationship to get reviews for a place
+        place = self.place_repo.get(place_id)
+        if place:
+            return place.reviews
+        return []
 
     def update_review(self, review_id, review_data):
         """Update a review's information."""
@@ -198,14 +197,14 @@ class HBnBFacade:
             user = self.user_repo.get(review_data['user_id'])
             if not user:
                 raise ValueError("User not found")
-            review.user = user
+            review.user_id = user.id
 
         # Validate place if provided
         if 'place_id' in review_data:
             place = self.place_repo.get(review_data['place_id'])
             if not place:
                 raise ValueError("Place not found")
-            review.place = place
+            review.place_id = place.id
 
         # Validate rating if provided
         if 'rating' in review_data:

@@ -1,5 +1,6 @@
 from .base_model import BaseModel
 from sqlalchemy import Column, String, Boolean
+from sqlalchemy.orm import relationship
 
 
 class User(BaseModel):
@@ -11,6 +12,10 @@ class User(BaseModel):
     email = Column(String(120), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
     is_admin = Column(Boolean, default=False)
+    
+    # Relationships
+    places = relationship('Place', backref='owner', lazy=True, cascade='all, delete-orphan')
+    reviews = relationship('Review', backref='user', lazy=True, cascade='all, delete-orphan')
 
     def __init__(self, first_name="", last_name="", email="",
                  password="", is_admin=False, **kwargs):
@@ -21,14 +26,10 @@ class User(BaseModel):
         self.email = email
         self.password = password
         self.is_admin = is_admin
-        # Note: places relationship will be added later
-        # For now, we'll keep the list-based approach for compatibility
-        if not hasattr(self, 'places'):
-            self.places = []
 
     def add_place(self, place):
         """Add a place to this user's places."""
-        if place and hasattr(place, 'owner') and place.owner == self:
+        if place and place not in self.places:
             self.places.append(place)
 
     def hash_password(self, password):
