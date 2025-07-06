@@ -79,7 +79,7 @@ class PlaceList(Resource):
 
             return {
                 'id': new_place.id,
-                'title': new_place.name,  # Map name back to title
+                'title': new_place.title,
                 'description': new_place.description,
                 'price': new_place.price,
                 'latitude': new_place.latitude,
@@ -97,8 +97,20 @@ class PlaceList(Resource):
     @api.response(200, 'List of places retrieved successfully')
     def get(self):
         """Retrieve a list of all places"""
-        # Placeholder for logic to return a list of all places
-        pass
+        try:
+            places = facade.get_all_places()
+            return [{
+                'id': place.id,
+                'title': place.title,
+                'description': place.description,
+                'price': place.price,
+                'latitude': place.latitude,
+                'longitude': place.longitude,
+                'created_at': place.created_at.isoformat(),
+                'updated_at': place.updated_at.isoformat()
+            } for place in places], 200
+        except Exception as e:
+            return {'error': str(e)}, 500
 
 
 @api.route('/<place_id>')
@@ -113,7 +125,7 @@ class PlaceResource(Resource):
                 return {'error': 'Place not found'}, 404
             return {
                 'id': place.id,
-                'title': place.name,  # Map name back to title
+                'title': place.title,
                 'description': place.description,
                 'price': place.price,
                 'latitude': place.latitude,
@@ -187,7 +199,7 @@ class PlaceResource(Resource):
                 return {'error': 'Place not found'}, 404
             return {
                 'id': updated_place.id,
-                'title': updated_place.name,  # Map name back to title
+                'title': updated_place.title,
                 'description': updated_place.description,
                 'price': updated_place.price,
                 'latitude': updated_place.latitude,

@@ -1,6 +1,7 @@
 import unittest
 from app import create_app
 
+
 class TestUserEndpoints(unittest.TestCase):
 
     def setUp(self):
@@ -32,9 +33,11 @@ class TestUserEndpoints(unittest.TestCase):
             "email": "test@example.com",
             "password": "testPassword123"
         })
-        print(f"Empty fields response: {response.status_code}, {response.get_json()}")
+        print(f"Empty fields response: {response.status_code}, "
+              f"{response.get_json()}")
         # Currently passes - this reveals the validation gap
-        self.assertEqual(response.status_code, 201)  # Will change this when validation is fixed
+        # Will change this when validation is fixed
+        self.assertEqual(response.status_code, 201)
 
     def test_create_user_invalid_email(self):
         """Test creating a user with invalid email format"""
@@ -44,9 +47,11 @@ class TestUserEndpoints(unittest.TestCase):
             "email": "invalid-email",
             "password": "testPassword123"
         })
-        print(f"Invalid email response: {response.status_code}, {response.get_json()}")
+        print(f"Invalid email response: {response.status_code}, "
+              f"{response.get_json()}")
         # Currently passes - this reveals the validation gap
-        self.assertEqual(response.status_code, 201)  # Will change this when validation is fixed
+        # Will change this when validation is fixed
+        self.assertEqual(response.status_code, 201)
 
     def test_create_user_missing_fields(self):
         """Test creating a user with missing required fields"""
@@ -54,7 +59,8 @@ class TestUserEndpoints(unittest.TestCase):
             "first_name": "John"
             # Missing last_name and email
         })
-        print(f"Missing fields response: {response.status_code}, {response.get_json()}")
+        print(f"Missing fields response: {response.status_code}, "
+              f"{response.get_json()}")
         self.assertEqual(response.status_code, 400)  # This should fail
 
     def test_create_user_duplicate_email(self):
@@ -68,7 +74,7 @@ class TestUserEndpoints(unittest.TestCase):
             "password": "password123"
         })
         self.assertEqual(response1.status_code, 201)
-        
+
         # Try to create second user with same email
         response2 = self.client.post('/api/v1/users/', json={
             "first_name": "Second",
@@ -80,6 +86,7 @@ class TestUserEndpoints(unittest.TestCase):
         data = response2.get_json()
         self.assertIn('error', data)
         self.assertEqual(data['error'], 'Email already registered')
+
 
 if __name__ == '__main__':
     unittest.main()

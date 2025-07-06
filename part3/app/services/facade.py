@@ -1,4 +1,4 @@
-from app.persistence.repository import InMemoryRepository
+from app.persistence.repository import SQLAlchemyRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
@@ -7,10 +7,10 @@ from app.models.review import Review
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
+        self.user_repo = SQLAlchemyRepository(User)
+        self.place_repo = SQLAlchemyRepository(Place)
+        self.review_repo = SQLAlchemyRepository(Review)
+        self.amenity_repo = SQLAlchemyRepository(Amenity)
 
     def create_user(self, user_data):
         """Create new usr and store in the repo."""
@@ -28,11 +28,7 @@ class HBnBFacade:
 
     def get_user_by_email(self, email):
         """Find usr by email."""
-        users = self.user_repo.get_all()
-        for user in users:
-            if user.email == email:
-                return user
-        return None
+        return self.user_repo.get_by_attribute('email', email)
 
     def get_all_users(self):
         """Retrieve all users."""
@@ -89,15 +85,16 @@ class HBnBFacade:
             if not amenity:
                 raise ValueError(f"Amenity {amenity_id} not found")
             amenities.append(amenity)
-        # Create place with name instead of title to match model
+        # Create place with title (relationships will be added later)
         place = Place(
-            name=place_data['title'],  # Map title to name
+            title=place_data['title'],
             description=place_data.get('description', ''),
             price=place_data['price'],
             latitude=place_data['latitude'],
-            longitude=place_data['longitude'],
-            owner=owner
+            longitude=place_data['longitude']
         )
+        # For now, store owner as attribute (relationships will be added later)
+        place.owner = owner
         # Add amenities
         for amenity in amenities:
             place.add_amenity(amenity)
@@ -109,8 +106,8 @@ class HBnBFacade:
         return self.place_repo.get(place_id)
 
     def get_all_places(self):
-        # Placeholder for logic to retrieve all places
-        pass
+        """Retrieve all places."""
+        return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
         """Update a place's information."""
@@ -134,7 +131,7 @@ class HBnBFacade:
             place.amenities = amenities
         # Update other fields
         if 'title' in place_data:
-            place.name = place_data['title']  # Map title to name
+            place.title = place_data['title']
         if 'description' in place_data:
             place.description = place_data['description']
         if 'price' in place_data:
@@ -164,13 +161,14 @@ class HBnBFacade:
         if not isinstance(rating, int) or rating < 1 or rating > 5:
             raise ValueError("Rating must be an integer between 1 and 5")
 
-        # Create review (map 'text' to 'comment' to match model)
+        # Create review (relationships will be added later)
         review = Review(
-            user=user,
-            place=place,
-            rating=rating,
-            comment=review_data.get('text', '')
+            text=review_data.get('text', ''),
+            rating=rating
         )
+        # For now, store user and place as attributes (relationships will be added later)
+        review.user = user
+        review.place = place
 
         self.review_repo.add(review)
         return review
@@ -184,8 +182,10 @@ class HBnBFacade:
         return self.review_repo.get_all()
 
     def get_reviews_by_place(self, place_id):
-        # Placeholder for logic to retrieve all reviews for a specific place
-        pass
+        """Retrieve all reviews for a specific place."""
+        # For now, we'll filter reviews manually since relationships aren't implemented yet
+        all_reviews = self.review_repo.get_all()
+        return [review for review in all_reviews if hasattr(review, 'place') and review.place and review.place.id == place_id]
 
     def update_review(self, review_id, review_data):
         """Update a review's information."""

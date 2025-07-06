@@ -1,10 +1,38 @@
 from .base_model import BaseModel
+from sqlalchemy import Column, String, Integer, Text
+from sqlalchemy.orm import validates
 
 
 class Review(BaseModel):
-    def __init__(self, user=None, place=None, rating=0, comment=""):
-        super().__init__()
-        self.user = user  # ref usr who wrote the review
-        self.place = place  # ref place being reviewed
+    """Review model representing a user's review of a place."""
+    __tablename__ = 'reviews'
+
+    text = Column(Text, nullable=False)
+    rating = Column(Integer, nullable=False)
+
+    def __init__(self, text="", rating=0, **kwargs):
+        """Initialize a Review instance."""
+        super().__init__(**kwargs)
+        self.text = text
         self.rating = rating
-        self.comment = comment
+        # Note: user and place relationships will be added later
+        # For now, we'll keep the object reference approach for compatibility
+        self.user = kwargs.get('user')
+        self.place = kwargs.get('place')
+
+    @validates('rating')
+    def validate_rating(self, key, rating):
+        """Validate that rating is between 1 and 5."""
+        if rating < 1 or rating > 5:
+            raise ValueError("Rating must be between 1 and 5")
+        return rating
+
+    @property
+    def comment(self):
+        """Alias for text to maintain backward compatibility."""
+        return self.text
+
+    @comment.setter
+    def comment(self, value):
+        """Alias for text to maintain backward compatibility."""
+        self.text = value
