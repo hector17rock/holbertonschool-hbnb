@@ -375,10 +375,6 @@ autopep8 --in-place --recursive app/
 - **Timestamp Tracking**: Created and updated timestamps
 - **Referential Integrity**: Foreign key constraints and validations
 
-## 📚 Additional Documentation
-
-- **[BCRYPT_USAGE.md](BCRYPT_USAGE.md)** - Comprehensive password hashing guide
-- **[SQLALCHEMY_IMPLEMENTATION_SUMMARY.md](SQLALCHEMY_IMPLEMENTATION_SUMMARY.md)** - Database implementation details
 
 ## 🐛 Troubleshooting
 
