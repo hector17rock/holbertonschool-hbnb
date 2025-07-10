@@ -222,6 +222,14 @@ To create a visual diagram from this definition, run:
 erd hbnb.er -o hbnb.png
 ```
 
+### Generated Diagram
+
+The visual representation of the database schema:
+
+![HBnB Database Schema](./hbnb_diagram-1.png)
+
+*Figure: Entity-Relationship Diagram showing the complete database schema with entities, attributes, and relationships.*
+
 ## 📡 API Endpoints
 
 ### Authentication
