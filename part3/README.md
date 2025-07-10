@@ -379,6 +379,26 @@ autopep8 --in-place --recursive app/
 - **Timestamp Tracking**: Created and updated timestamps
 - **Referential Integrity**: Foreign key constraints and validations
 
+## 📚 Documentation
+
+Comprehensive documentation is available in the `documentations/` directory:
+
+### Database & Relationships
+- **[Complete Relationships Documentation](./documentations/COMPLETE_RELATIONSHIPS_DOCUMENTATION.md)** - Comprehensive guide to all entity relationships, including detailed explanations of one-to-many, many-to-many, and foreign key implementations
+- **[Many-to-Many Implementation](./documentations/MANY_TO_MANY_IMPLEMENTATION.md)** - Detailed implementation guide for many-to-many relationships, specifically covering Place-Amenity associations
+- **[Relationships Implementation](./documentations/RELATIONSHIPS_IMPLEMENTATION.md)** - Technical implementation details for all database relationships and SQLAlchemy configurations
+
+### Quick Access
+```bash
+# View complete relationships documentation
+cat documentations/COMPLETE_RELATIONSHIPS_DOCUMENTATION.md
+
+# View many-to-many implementation guide
+cat documentations/MANY_TO_MANY_IMPLEMENTATION.md
+
+# View relationships implementation details
+cat documentations/RELATIONSHIPS_IMPLEMENTATION.md
+```
 
 ## 🐛 Troubleshooting
 
