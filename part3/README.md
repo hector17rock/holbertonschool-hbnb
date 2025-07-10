@@ -43,6 +43,10 @@ part3/
 │   └── persistence/
 │       ├── __init__.py
 │       └── repository.py           # Repository pattern implementation
+├── documentations/                 # Project documentation
+│   ├── COMPLETE_RELATIONSHIPS_DOCUMENTATION.md  # Complete relationships guide
+│   ├── MANY_TO_MANY_IMPLEMENTATION.md           # Many-to-many relationships
+│   └── RELATIONSHIPS_IMPLEMENTATION.md          # Relationships implementation
 ├── tests/                          # Test files and examples
 ├── config.py                       # Application configuration
 ├── run.py                          # Application entry point
