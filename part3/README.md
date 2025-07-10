@@ -138,6 +138,90 @@ Access the interactive API documentation at:
 - **Swagger UI**: `http://localhost:5001/`
 - **API Endpoints**: `http://localhost:5001/api/v1/`
 
+## ER Diagram
+
+The `hbnb.er` file contains the Entity-Relationship diagram definitions for the project, capturing the structure of database entities and their relationships:
+
+```plaintext
+[User]
+*id {label: "varchar, primary key"}
+first_name {label: "varchar"}
+last_name {label: "varchar"}
+email {label: "varchar, unique"}
+password {label: "varchar"}
+is_admin {label: "boolean"}
+
+[Place]
+*id {label: "varchar, primary key"}
+title {label: "varchar"}
+description {label: "text"}
+price {label: "decimal"}
+latitude {label: "decimal"}
+longitude {label: "decimal"}
++owner_id {label: "varchar, foreign key"}
+
+[Review]
+*id {label: "varchar, primary key"}
+text {label: "text"}
+rating {label: "integer"}
++user_id {label: "varchar, foreign key"}
++place_id {label: "varchar, foreign key"}
+
+[Amenity]
+*id {label: "varchar, primary key"}
+name {label: "varchar"}
+
+[Place_Amenity]
+*+place_id {label: "varchar, foreign key"}
+*+amenity_id {label: "varchar, foreign key"}
+
+[Reservation]
+*id {label: "varchar, primary key"}
+check_in_date {label: "date"}
+check_out_date {label: "date"}
+total_guests {label: "integer"}
+total_price {label: "decimal"}
+status {label: "varchar"}
+created_at {label: "datetime"}
+updated_at {label: "datetime"}
++user_id {label: "varchar, foreign key"}
++place_id {label: "varchar, foreign key"}
+
+[Payment]
+*id {label: "varchar, primary key"}
+amount {label: "decimal"}
+payment_method {label: "varchar"}
+payment_status {label: "varchar"}
+transaction_id {label: "varchar"}
+payment_date {label: "datetime"}
++reservation_id {label: "varchar, foreign key"}
+
+[Message]
+*id {label: "varchar, primary key"}
+content {label: "text"}
+sent_at {label: "datetime"}
+is_read {label: "boolean"}
++sender_id {label: "varchar, foreign key"}
++receiver_id {label: "varchar, foreign key"}
++reservation_id {label: "varchar, foreign key"}
+
+# Relationships
+User ||--o{ Place
+User ||--o{ Review
+User ||--o{ Reservation
+User ||--o{ Message
+Place ||--o{ Review
+Place ||--o{ Reservation
+Place }o--o{ Amenity
+Reservation ||--|| Payment
+Reservation ||--o{ Message
+```
+
+To create a visual diagram from this definition, run:
+```bash
+erd hbnb.er -o hbnb.png
+```
+
 ## 📡 API Endpoints
 
 ### Authentication
