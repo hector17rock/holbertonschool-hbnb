@@ -1,5 +1,9 @@
 # HBnB Evolution - Part 3: Persistence and Advanced Features
 
+## Author
+
+- **Hector Soto**
+
 ## 📖 Overview
 
 Part 3 of the HBnB Evolution project introduces advanced persistence capabilities, authentication, and business logic validation. This iteration builds upon the foundation established in Parts 1 and 2, implementing SQLAlchemy ORM, JWT authentication, password hashing, and comprehensive API endpoints.
