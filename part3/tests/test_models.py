@@ -3,7 +3,6 @@ from app.models.place import Place
 from app.models.review import Review
 from app.models.amenity import Amenity
 
-
 # Test User creation
 def test_user_creation():
     user = User(first_name="John", last_name="Doe",
@@ -14,13 +13,11 @@ def test_user_creation():
     assert hasattr(user, 'places') and isinstance(user.places, list)
     print("√ User creation test passed!")
 
-
 # Test Amenity creation
 def test_amenity_creation():
     amenity = Amenity(name="Wi-Fi")
     assert amenity.name == "Wi-Fi"
     print("√ Amenity creation test passed!")
-
 
 # Test Place and Review relationships
 def test_place_creation_and_relationships():
@@ -51,7 +48,6 @@ def test_place_creation_and_relationships():
     assert pool in place.amenities
 
     print("√ Place creation and relationships test passed!")
-
 
 # Run all tests
 if __name__ == "__main__":

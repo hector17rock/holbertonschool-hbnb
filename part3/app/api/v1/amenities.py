@@ -1,8 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from flask import request
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
-import json
 
 api = Namespace('amenities', description='Amenity operations')
 
@@ -14,28 +12,21 @@ amenity_model = api.model('Amenity', {
 
 @api.route('/')
 class AmenityList(Resource):
-    @jwt_required()
     @api.expect(amenity_model)
     @api.response(201, 'Amenity successfully created')
     @api.response(400, 'Invalid input data')
-    @api.response(403, 'Admin privileges required')
     def post(self):
         """Register a new amenity"""
-        current_user_identity = get_jwt_identity()
-        current_user = json.loads(current_user_identity)
-        if not current_user.get('is_admin'):
-            return {'error': 'Admin privileges required'}, 403
-
         amenity_data = api.payload
-
+        
         # Validate required fields
         if not amenity_data or 'name' not in amenity_data:
             return {'error': 'Missing required field: name'}, 400
-
+        
         # Validate name is not empty
         if not amenity_data['name'].strip():
             return {'error': 'Name cannot be empty'}, 400
-
+        
         try:
             # Create the amenity using the facade
             new_amenity = facade.create_amenity(amenity_data)
@@ -76,7 +67,7 @@ class AmenityResource(Resource):
             amenity = facade.get_amenity(amenity_id)
             if not amenity:
                 return {'error': 'Amenity not found'}, 404
-
+            
             return {
                 'id': amenity.id,
                 'name': amenity.name,
@@ -86,42 +77,11 @@ class AmenityResource(Resource):
         except Exception as e:
             return {'error': str(e)}, 500
 
-    @jwt_required()
     @api.expect(amenity_model)
     @api.response(200, 'Amenity updated successfully')
     @api.response(404, 'Amenity not found')
     @api.response(400, 'Invalid input data')
-    @api.response(403, 'Admin privileges required')
     def put(self, amenity_id):
         """Update an amenity's information"""
-        current_user_identity = get_jwt_identity()
-        current_user = json.loads(current_user_identity)
-        if not current_user.get('is_admin'):
-            return {'error': 'Admin privileges required'}, 403
-
-        amenity_data = api.payload
-
-        # Validate required fields
-        if not amenity_data or 'name' not in amenity_data:
-            return {'error': 'Missing required field: name'}, 400
-
-        # Validate name is not empty
-        if not amenity_data['name'].strip():
-            return {'error': 'Name cannot be empty'}, 400
-
-        # Check if amenity exists
-        amenity = facade.get_amenity(amenity_id)
-        if not amenity:
-            return {'error': 'Amenity not found'}, 404
-
-        try:
-            # Update the amenity using the facade
-            updated_amenity = facade.update_amenity(amenity_id, amenity_data)
-            return {
-                'id': updated_amenity.id,
-                'name': updated_amenity.name,
-                'created_at': updated_amenity.created_at.isoformat(),
-                'updated_at': updated_amenity.updated_at.isoformat()
-            }, 200
-        except Exception as e:
-            return {'error': str(e)}, 400
+        # Placeholder for the logic to update an amenity by ID
+        pass
