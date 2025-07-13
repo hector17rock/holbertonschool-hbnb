@@ -16,11 +16,11 @@ class HBnBFacade:
         use_sqlalchemy = os.getenv('USE_SQLALCHEMY', 'true').lower() == 'true'
         
         if use_sqlalchemy:
-            # SQLAlchemy repositories - will be used once models are mapped
+            # SQLAlchemy specialized repositories
             self.user_repo = UserRepository()
-            self.place_repo = SQLAlchemyRepository(Place)
-            self.review_repo = SQLAlchemyRepository(Review)
-            self.amenity_repo = SQLAlchemyRepository(Amenity)
+            self.place_repo = PlaceRepository()
+            self.review_repo = ReviewRepository()
+            self.amenity_repo = AmenityRepository()
         else:
             # In-memory repositories for testing or when SQLAlchemy is not available
             self.user_repo = InMemoryRepository()
@@ -115,9 +115,9 @@ class HBnBFacade:
             if not amenity:
                 raise ValueError(f"Amenity {amenity_id} not found")
             amenities.append(amenity)
-        # Create place with name instead of title to match model
+        # Create place
         place = Place(
-            name=place_data['title'],  # Map title to name
+            title=place_data['title'],
             description=place_data.get('description', ''),
             price=place_data['price'],
             latitude=place_data['latitude'],
@@ -160,7 +160,7 @@ class HBnBFacade:
             place.amenities = amenities
         # Update other fields
         if 'title' in place_data:
-            place.name = place_data['title']  # Map title to name
+            place.title = place_data['title']
         if 'description' in place_data:
             place.description = place_data['description']
         if 'price' in place_data:
@@ -200,12 +200,12 @@ class HBnBFacade:
         if not isinstance(rating, int) or rating < 1 or rating > 5:
             raise ValueError("Rating must be an integer between 1 and 5")
 
-        # Create review (map 'text' to 'comment' to match model)
+        # Create review 
         review = Review(
             user=user,
             place=place,
             rating=rating,
-            comment=review_data.get('text', '')
+            text=review_data.get('text', '')
         )
 
         self.review_repo.add(review)

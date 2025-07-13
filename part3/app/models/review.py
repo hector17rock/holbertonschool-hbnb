@@ -8,12 +8,23 @@ class Review(BaseModel):
 
     text = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
+    
+    # Foreign keys
+    user_id = db.Column(db.String(60), db.ForeignKey('users.id'), nullable=False)
+    place_id = db.Column(db.String(60), db.ForeignKey('places.id'), nullable=False)
+    
+    # Relationships
+    user = db.relationship('User', back_populates='reviews')
+    place = db.relationship('Place', back_populates='reviews')
 
     def __init__(self, user=None, place=None, rating=0, text=""):
         super().__init__()
-        # Note: user and place relationships will be added later
         self.rating = rating
         self.text = text
+        if user:
+            self.user = user
+        if place:
+            self.place = place
         # For backward compatibility, also set comment
         self.comment = text
 

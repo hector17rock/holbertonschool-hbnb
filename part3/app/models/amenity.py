@@ -7,6 +7,9 @@ class Amenity(BaseModel):
     __tablename__ = 'amenities'
 
     name = db.Column(db.String(50), nullable=False, unique=True)
+    
+    # Relationships
+    places = db.relationship('Place', secondary='place_amenity', back_populates='amenities')
 
     def __init__(self, name=""):
         super().__init__()

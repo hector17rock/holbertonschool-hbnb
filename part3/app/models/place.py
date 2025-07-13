@@ -2,6 +2,12 @@ from .base_model import BaseModel
 from app import db
 from sqlalchemy.orm import validates
 
+# Association table for many-to-many relationship between Place and Amenity
+place_amenity = db.Table('place_amenity',
+    db.Column('place_id', db.String(60), db.ForeignKey('places.id'), primary_key=True),
+    db.Column('amenity_id', db.String(60), db.ForeignKey('amenities.id'), primary_key=True)
+)
+
 
 class Place(BaseModel):
     __tablename__ = 'places'
@@ -11,6 +17,14 @@ class Place(BaseModel):
     price = db.Column(db.Float, nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
+    
+    # Foreign key to User (owner)
+    owner_id = db.Column(db.String(60), db.ForeignKey('users.id'), nullable=False)
+    
+    # Relationships
+    owner = db.relationship('User', back_populates='places')
+    reviews = db.relationship('Review', back_populates='place', cascade='all, delete-orphan')
+    amenities = db.relationship('Amenity', secondary=place_amenity, back_populates='places')
 
     def __init__(self, title="", description="", price=0, latitude=0.0,
                  longitude=0.0, owner=None):
@@ -20,8 +34,8 @@ class Place(BaseModel):
         self.price = price
         self.latitude = latitude
         self.longitude = longitude
-        # Note: owner relationship will be added later
-        # Note: reviews and amenities relationships will be added later
+        if owner:
+            self.owner = owner
 
     @validates('title')
     def validate_title(self, key, title):
@@ -59,13 +73,18 @@ class Place(BaseModel):
             raise ValueError("Longitude must be between -180 and 180")
         return float(longitude)
 
-    # Legacy compatibility methods (will be updated when relationships are added)
-    def add_reviews(self, review):
-        """Add review to place (placeholder for future relationship)"""
-        # This will be implemented when relationships are added
-        pass
+    # Methods to work with relationships
+    def add_review(self, review):
+        """Add review to place"""
+        if review not in self.reviews:
+            self.reviews.append(review)
 
     def add_amenity(self, amenity):
-        """Add amenity to place (placeholder for future relationship)"""
-        # This will be implemented when relationships are added
-        pass
+        """Add amenity to place"""
+        if amenity not in self.amenities:
+            self.amenities.append(amenity)
+    
+    def remove_amenity(self, amenity):
+        """Remove amenity from place"""
+        if amenity in self.amenities:
+            self.amenities.remove(amenity)
