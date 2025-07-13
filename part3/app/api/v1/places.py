@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource, fields
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services import facade
 
 api = Namespace('places', description='Place operations')
@@ -33,17 +34,22 @@ place_model = api.model('Place', {
 
 @api.route('/')
 class PlaceList(Resource):
+    @jwt_required()
     @api.expect(place_model)
     @api.response(201, 'Place successfully created')
     @api.response(400, 'Invalid input data')
+    @api.response(401, 'Authentication required')
     def post(self):
         """Register a new place"""
+        current_user = get_jwt_identity()
         place_data = api.payload
 
         try:
+            # Set owner_id to current authenticated user
+            place_data['owner_id'] = current_user
+            
             # Validate required fields
-            required_fields = ['title', 'price', 'latitude', 'longitude',
-                               'owner_id']
+            required_fields = ['title', 'price', 'latitude', 'longitude']
             for field in required_fields:
                 if field not in place_data or place_data[field] is None:
                     return {'error': f'Missing required field: {field}'}, 400
@@ -122,12 +128,16 @@ class PlaceResource(Resource):
         except Exception as e:
             return {'error': str(e)}, 500
 
+    @jwt_required()
     @api.expect(place_model)
     @api.response(200, 'Place updated successfully')
     @api.response(404, 'Place not found')
     @api.response(400, 'Invalid input data')
+    @api.response(401, 'Authentication required')
+    @api.response(403, 'Unauthorized action')
     def put(self, place_id):
         """Update a place's information"""
+        current_user = get_jwt_identity()
         place_data = api.payload
 
         try:
@@ -135,6 +145,10 @@ class PlaceResource(Resource):
             existing_place = facade.get_place(place_id)
             if not existing_place:
                 return {'error': 'Place not found'}, 404
+                
+            # Verify that the current user is the owner of the place
+            if existing_place.owner.id != current_user:
+                return {'error': 'Unauthorized action'}, 403
 
             # Validate data types and ranges if provided
             if 'price' in place_data:

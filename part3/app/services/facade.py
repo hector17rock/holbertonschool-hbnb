@@ -109,8 +109,8 @@ class HBnBFacade:
         return self.place_repo.get(place_id)
 
     def get_all_places(self):
-        # Placeholder for logic to retrieve all places
-        pass
+        """Retrieve all places."""
+        return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
         """Update a place's information."""
@@ -159,6 +159,16 @@ class HBnBFacade:
         if not place:
             raise ValueError("Place not found")
 
+        # Check if user is trying to review their own place
+        if place.owner.id == user.id:
+            raise ValueError("You cannot review your own place")
+
+        # Check if user has already reviewed this place
+        existing_reviews = self.get_reviews_by_place(review_data['place_id'])
+        for review in existing_reviews:
+            if review.user.id == user.id:
+                raise ValueError("You have already reviewed this place")
+
         # Validate rating is between 1 and 5
         rating = review_data.get('rating')
         if not isinstance(rating, int) or rating < 1 or rating > 5:
@@ -184,8 +194,9 @@ class HBnBFacade:
         return self.review_repo.get_all()
 
     def get_reviews_by_place(self, place_id):
-        # Placeholder for logic to retrieve all reviews for a specific place
-        pass
+        """Retrieve all reviews for a specific place."""
+        all_reviews = self.review_repo.get_all()
+        return [review for review in all_reviews if review.place.id == place_id]
 
     def update_review(self, review_id, review_data):
         """Update a review's information."""
@@ -224,5 +235,9 @@ class HBnBFacade:
         return review
 
     def delete_review(self, review_id):
-        # Placeholder for logic to delete a review
-        pass
+        """Delete a review by ID."""
+        review = self.review_repo.get(review_id)
+        if review:
+            self.review_repo.delete(review_id)
+            return True
+        return False
