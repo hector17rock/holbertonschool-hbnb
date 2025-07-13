@@ -8,8 +8,20 @@ class User(BaseModel):
         self.last_name = last_name
         self.email = email
         self.password = password
-        self.places = []  # Lst places
+        self.places = []  # List of places
 
     def add_place(self, place):
         if place and place.owner == self:
             self.places.append(place)
+
+    def hash_password(self, password):
+        """Hashes the password before storing it."""
+        from flask_bcrypt import Bcrypt
+        bcrypt = Bcrypt()
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def verify_password(self, password):
+        """Verifies if the provided password matches the hashed password."""
+        from flask_bcrypt import Bcrypt
+        bcrypt = Bcrypt()
+        return bcrypt.check_password_hash(self.password, password)

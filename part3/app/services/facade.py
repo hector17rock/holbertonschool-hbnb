@@ -13,8 +13,15 @@ class HBnBFacade:
         self.amenity_repo = InMemoryRepository()
 
     def create_user(self, user_data):
-        """Create new usr and store in the repo."""
-        user = User(**user_data)
+        """Create new user and store in the repo."""
+        user = User(
+            first_name=user_data['first_name'],
+            last_name=user_data['last_name'],
+            email=user_data['email']
+        )
+        # Hash the password if provided
+        if 'password' in user_data:
+            user.hash_password(user_data['password'])
         self.user_repo.add(user)
         return user
 
@@ -38,6 +45,14 @@ class HBnBFacade:
         """Update a user's information."""
         user = self.user_repo.get(user_id)
         if user:
+            # Hash the password if it's being updated
+            if 'password' in user_data:
+                user.hash_password(user_data['password'])
+                # Remove password from user_data to avoid storing it again
+                user_data_copy = user_data.copy()
+                del user_data_copy['password']
+                user_data = user_data_copy
+            
             self.user_repo.update(user_id, user_data)
             return user
         return None
