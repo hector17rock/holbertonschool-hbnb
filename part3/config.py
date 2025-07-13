@@ -11,6 +11,8 @@ class DevelopmentConfig(Config):
     """Development configuration"""
     DEBUG = True
     DEVELOPMENT = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class ProductionConfig(Config):
     """Production configuration"""

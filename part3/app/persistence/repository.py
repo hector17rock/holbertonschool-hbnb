@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from app import db
 
 
 class Repository(ABC):
@@ -52,3 +53,42 @@ class InMemoryRepository(Repository):
     def get_by_attribute(self, attr_name, attr_value):
         return next((obj for obj in self._storage.values()
                     if getattr(obj, attr_name) == attr_value), None)
+
+
+class SQLAlchemyRepository(Repository):
+    def __init__(self, model):
+        self.model = model
+
+    def add(self, obj):
+        """Add an object to the database"""
+        db.session.add(obj)
+        db.session.commit()
+
+    def get(self, obj_id):
+        """Get an object by ID"""
+        return self.model.query.get(obj_id)
+
+    def get_all(self):
+        """Get all objects"""
+        return self.model.query.all()
+
+    def update(self, obj_id, data):
+        """Update an object with new data"""
+        obj = self.get(obj_id)
+        if obj:
+            for key, value in data.items():
+                setattr(obj, key, value)
+            db.session.commit()
+        return obj
+
+    def delete(self, obj_id):
+        """Delete an object by ID"""
+        obj = self.get(obj_id)
+        if obj:
+            db.session.delete(obj)
+            db.session.commit()
+        return obj is not None
+
+    def get_by_attribute(self, attr_name, attr_value):
+        """Get an object by a specific attribute"""
+        return self.model.query.filter_by(**{attr_name: attr_value}).first()

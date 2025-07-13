@@ -1,16 +1,28 @@
-from app.persistence.repository import InMemoryRepository
+from app.persistence.repository import InMemoryRepository, SQLAlchemyRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
 from app.models.review import Review
+import os
 
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
+        # Use SQLAlchemy repository by default, fallback to InMemory for testing
+        use_sqlalchemy = os.getenv('USE_SQLALCHEMY', 'true').lower() == 'true'
+        
+        if use_sqlalchemy:
+            # SQLAlchemy repositories - will be used once models are mapped
+            self.user_repo = SQLAlchemyRepository(User)
+            self.place_repo = SQLAlchemyRepository(Place)
+            self.review_repo = SQLAlchemyRepository(Review)
+            self.amenity_repo = SQLAlchemyRepository(Amenity)
+        else:
+            # In-memory repositories for testing or when SQLAlchemy is not available
+            self.user_repo = InMemoryRepository()
+            self.place_repo = InMemoryRepository()
+            self.review_repo = InMemoryRepository()
+            self.amenity_repo = InMemoryRepository()
 
     def create_user(self, user_data):
         """Create new user and store in the repo."""
@@ -32,11 +44,7 @@ class HBnBFacade:
 
     def get_user_by_email(self, email):
         """Find usr by email."""
-        users = self.user_repo.get_all()
-        for user in users:
-            if user.email == email:
-                return user
-        return None
+        return self.user_repo.get_by_attribute('email', email)
 
     def get_all_users(self):
         """Retrieve all users."""
@@ -73,8 +81,18 @@ class HBnBFacade:
         return self.amenity_repo.get_all()
 
     def update_amenity(self, amenity_id, amenity_data):
-        # Placeholder for logic to update an amenity
-        pass
+        """Update an amenity's information."""
+        amenity = self.amenity_repo.get(amenity_id)
+        if not amenity:
+            return None
+        
+        # Update amenity fields
+        if 'name' in amenity_data:
+            amenity.name = amenity_data['name']
+        
+        # Update the amenity in the repository
+        self.amenity_repo.update(amenity_id, amenity_data)
+        return amenity
 
     def create_place(self, place_data):
         """Create a new place and store in the repository."""
