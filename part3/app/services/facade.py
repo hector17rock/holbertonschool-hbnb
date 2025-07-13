@@ -17,7 +17,8 @@ class HBnBFacade:
         user = User(
             first_name=user_data['first_name'],
             last_name=user_data['last_name'],
-            email=user_data['email']
+            email=user_data['email'],
+            is_admin=user_data.get('is_admin', False)
         )
         # Hash the password if provided
         if 'password' in user_data:
