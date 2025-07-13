@@ -1,4 +1,5 @@
 from app.persistence.repository import InMemoryRepository, SQLAlchemyRepository
+from app.services.repositories.user_repository import UserRepository
 from app.models.user import User
 from app.models.amenity import Amenity
 from app.models.place import Place
@@ -13,7 +14,7 @@ class HBnBFacade:
         
         if use_sqlalchemy:
             # SQLAlchemy repositories - will be used once models are mapped
-            self.user_repo = SQLAlchemyRepository(User)
+            self.user_repo = UserRepository()
             self.place_repo = SQLAlchemyRepository(Place)
             self.review_repo = SQLAlchemyRepository(Review)
             self.amenity_repo = SQLAlchemyRepository(Amenity)
@@ -44,6 +45,10 @@ class HBnBFacade:
 
     def get_user_by_email(self, email):
         """Find usr by email."""
+        # Use UserRepository's specific method when available
+        if hasattr(self.user_repo, 'get_user_by_email'):
+            return self.user_repo.get_user_by_email(email)
+        # Fallback to generic method for InMemoryRepository
         return self.user_repo.get_by_attribute('email', email)
 
     def get_all_users(self):
