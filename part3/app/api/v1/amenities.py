@@ -1,5 +1,6 @@
 from flask_restx import Namespace, Resource, fields
 from flask import request
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from app.services import facade
 
 api = Namespace('amenities', description='Amenity operations')
@@ -12,11 +13,19 @@ amenity_model = api.model('Amenity', {
 
 @api.route('/')
 class AmenityList(Resource):
+    @jwt_required()
     @api.expect(amenity_model)
     @api.response(201, 'Amenity successfully created')
     @api.response(400, 'Invalid input data')
+    @api.response(401, 'Authentication required')
+    @api.response(403, 'Admin privileges required')
     def post(self):
-        """Register a new amenity"""
+        """Register a new amenity (Admin only)"""
+        # Check if user is admin
+        claims = get_jwt()
+        if not claims.get('is_admin', False):
+            return {'error': 'Admin privileges required'}, 403
+            
         amenity_data = api.payload
         
         # Validate required fields
@@ -77,11 +86,43 @@ class AmenityResource(Resource):
         except Exception as e:
             return {'error': str(e)}, 500
 
+    @jwt_required()
     @api.expect(amenity_model)
     @api.response(200, 'Amenity updated successfully')
     @api.response(404, 'Amenity not found')
     @api.response(400, 'Invalid input data')
+    @api.response(401, 'Authentication required')
+    @api.response(403, 'Admin privileges required')
     def put(self, amenity_id):
-        """Update an amenity's information"""
-        # Placeholder for the logic to update an amenity by ID
-        pass
+        """Update an amenity's information (Admin only)"""
+        # Check if user is admin
+        claims = get_jwt()
+        if not claims.get('is_admin', False):
+            return {'error': 'Admin privileges required'}, 403
+            
+        amenity_data = api.payload
+        
+        # Validate required fields
+        if not amenity_data or 'name' not in amenity_data:
+            return {'error': 'Missing required field: name'}, 400
+        
+        # Validate name is not empty
+        if not amenity_data['name'].strip():
+            return {'error': 'Name cannot be empty'}, 400
+        
+        try:
+            # Check if amenity exists
+            existing_amenity = facade.get_amenity(amenity_id)
+            if not existing_amenity:
+                return {'error': 'Amenity not found'}, 404
+            
+            # Update the amenity using the facade
+            updated_amenity = facade.update_amenity(amenity_id, amenity_data)
+            return {
+                'id': updated_amenity.id,
+                'name': updated_amenity.name,
+                'created_at': updated_amenity.created_at.isoformat(),
+                'updated_at': updated_amenity.updated_at.isoformat()
+            }, 200
+        except Exception as e:
+            return {'error': str(e)}, 400
