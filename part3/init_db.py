@@ -23,7 +23,7 @@ def init_database():
             # Create all tables
             print("Creating database tables...")
             db.create_all()
-            print("✅ Database tables created successfully")
+            print("Database tables created successfully")
             
             # Create a sample admin user
             admin_user = User(
@@ -39,12 +39,12 @@ def init_database():
             if not existing_admin:
                 db.session.add(admin_user)
                 db.session.commit()
-                print("✅ Admin user created:")
+                print("Admin user created:")
                 print(f"   Email: {admin_user.email}")
                 print(f"   ID: {admin_user.id}")
                 print(f"   Password: adminpass123")
             else:
-                print("ℹ️  Admin user already exists")
+                print("Admin user already exists")
             
             # Create a sample regular user
             regular_user = User(
@@ -60,12 +60,12 @@ def init_database():
             if not existing_user:
                 db.session.add(regular_user)
                 db.session.commit()
-                print("✅ Regular user created:")
+                print("Regular user created:")
                 print(f"   Email: {regular_user.email}")
                 print(f"   ID: {regular_user.id}")
                 print(f"   Password: password123")
             else:
-                print("ℹ️  Regular user already exists")
+                print("Regular user already exists")
             
             # Show database status
             user_count = User.query.count()
@@ -77,10 +77,10 @@ def init_database():
             print(f"- Admin users: {admin_count}")
             print(f"- Regular users: {regular_count}")
             
-            print("\n✅ Database initialization completed!")
+            print("\nDatabase initialization completed!")
             
         except Exception as e:
-            print(f"❌ Error initializing database: {e}")
+            print(f"Error initializing database: {e}")
             return False
     
     return True
@@ -116,5 +116,5 @@ if __name__ == "__main__":
         print('curl -X GET "http://127.0.0.1:5000/api/v1/users/"')
         
     else:
-        print("\n❌ Database initialization failed!")
+        print("\nDatabase initialization failed!")
         sys.exit(1)
