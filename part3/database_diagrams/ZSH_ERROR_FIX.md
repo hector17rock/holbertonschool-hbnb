@@ -18,6 +18,17 @@ ENTITY_NAME {
 }
 ```
 
+## ✅ CORRECT Mermaid Syntax
+```mermaid
+erDiagram
+    ENTITY_NAME {
+        string id PK "Primary Key"
+        string name UK "Unique Key"
+    }
+```
+
+**Key Point**: Always include the `erDiagram` declaration at the start!
+
 ## ✅ CORRECT - Do This Instead
 
 ### Method 1: View on GitHub/GitLab (Recommended)

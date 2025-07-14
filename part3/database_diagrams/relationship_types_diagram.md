@@ -164,6 +164,11 @@ erDiagram
         string last_name
     }
     
+    PLACES {
+        string id PK
+        string title
+    }
+    
     AMENITIES {
         string id PK
         string name UK "UNIQUE"
@@ -178,7 +183,7 @@ erDiagram
     }
     
     USERS ||--o{ REVIEWS : "user_id"
-    PLACE ||--o{ REVIEWS : "place_id"
+    PLACES ||--o{ REVIEWS : "place_id"
     
     %% Unique constraint on combination
     REVIEWS : "UNIQUE(user_id, place_id)"

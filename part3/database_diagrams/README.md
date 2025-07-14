@@ -70,12 +70,13 @@ erDiagram
 
 ### Entity Definition
 ```mermaid
-ENTITY_NAME {
-    datatype column_name "constraints"
-    string id PK "Primary Key"
-    string name UK "Unique Key"
-    string foreign_id FK "Foreign Key"
-}
+erDiagram
+    ENTITY_NAME {
+        datatype column_name "constraints"
+        string id PK "Primary Key"
+        string name UK "Unique Key"
+        string foreign_id FK "Foreign Key"
+    }
 ```
 
 ### Relationship Notation
