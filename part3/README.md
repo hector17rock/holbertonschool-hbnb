@@ -44,9 +44,13 @@ part3/
 │       ├── __init__.py
 │       └── repository.py           # Repository pattern implementation
 ├── documentations/                 # Project documentation
-│   ├── COMPLETE_RELATIONSHIPS_DOCUMENTATION.md  # Complete relationships guide
-│   ├── MANY_TO_MANY_IMPLEMENTATION.md           # Many-to-many relationships
-│   └── RELATIONSHIPS_IMPLEMENTATION.md          # Relationships implementation
+│   ├── ADMIN_ENDPOINTS_GUIDE.md           # Admin endpoints usage guide
+│   ├── APPLICATION_FACTORY_COMPLETED.md   # Application factory pattern guide
+│   ├── JWT_AUTHENTICATION_COMPLETED.md    # JWT authentication implementation
+│   ├── PASSWORD_HASHING_COMPLETED.md      # Password hashing with bcrypt
+│   ├── RELATIONSHIPS_DOCUMENTATION.md     # Database relationships guide
+│   ├── SQLALCHEMY_INTEGRATION.md          # SQLAlchemy integration details
+│   └── USER_MODEL_MAPPING.md              # User model and database mapping
 ├── database_diagrams/              # Database ER diagrams (Mermaid.js)
 │   ├── hbnb_er_diagram.md          # Core database schema
 │   ├── hbnb_extended_er_diagram.md # Extended schema with booking system
@@ -55,11 +59,17 @@ part3/
 │   ├── view_diagrams.sh            # Safe diagram viewer script
 │   └── README.md                   # Diagram documentation
 ├── sql_scripts/                    # SQL table generation scripts
+│   ├── 00_execute_all.sql          # Master script to execute all SQL files
 │   ├── 01_create_tables.sql        # Database schema creation
 │   ├── 02_insert_initial_data.sql  # Initial data insertion
 │   ├── 03_test_crud_operations.sql # CRUD operations testing
-│   └── README.md                   # SQL scripts documentation
+│   ├── generate_uuids.py           # UUID generation utility
+│   ├── test_sql_scripts.py         # Test validation for SQL scripts
+│   ├── README.md                   # SQL scripts documentation
+│   └── SQL_SCRIPTS_DOCUMENTATION.md # Comprehensive SQL documentation
 ├── tests/                          # Test files and examples
+│   ├── test_*.py                   # Various test modules
+│   └── example_*.py                # Example usage scripts
 ├── config.py                       # Application configuration
 ├── run.py                          # Application entry point
 ├── requirements.txt                # Python dependencies
@@ -435,6 +445,33 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
 python init_db.py  # Initialize database schema
 ```
 
+### SQL Scripts
+The `sql_scripts/` directory contains comprehensive SQL scripts for database setup and testing:
+
+#### Available Scripts
+- **`00_execute_all.sql`** - Master script that executes all SQL files in order
+- **`01_create_tables.sql`** - Creates all database tables with proper constraints
+- **`02_insert_initial_data.sql`** - Inserts initial test data for development
+- **`03_test_crud_operations.sql`** - Tests all CRUD operations on the database
+- **`generate_uuids.py`** - Python utility to generate UUID values for SQL scripts
+- **`test_sql_scripts.py`** - Validation tests for SQL script functionality
+
+#### Using SQL Scripts
+```bash
+# Execute all SQL scripts in order
+mysql -u username -p database_name < sql_scripts/00_execute_all.sql
+
+# Or execute individual scripts
+mysql -u username -p database_name < sql_scripts/01_create_tables.sql
+mysql -u username -p database_name < sql_scripts/02_insert_initial_data.sql
+
+# Generate UUIDs for testing
+python sql_scripts/generate_uuids.py
+
+# Test SQL scripts functionality
+python sql_scripts/test_sql_scripts.py
+```
+
 ### Repository Pattern
 The application implements a flexible repository pattern supporting both in-memory and database storage:
 
@@ -540,21 +577,38 @@ autopep8 --in-place --recursive app/
 
 Comprehensive documentation is available in the `documentations/` directory:
 
-### Database & Relationships
-- **[Complete Relationships Documentation](./documentations/COMPLETE_RELATIONSHIPS_DOCUMENTATION.md)** - Comprehensive guide to all entity relationships, including detailed explanations of one-to-many, many-to-many, and foreign key implementations
-- **[Many-to-Many Implementation](./documentations/MANY_TO_MANY_IMPLEMENTATION.md)** - Detailed implementation guide for many-to-many relationships, specifically covering Place-Amenity associations
-- **[Relationships Implementation](./documentations/RELATIONSHIPS_IMPLEMENTATION.md)** - Technical implementation details for all database relationships and SQLAlchemy configurations
+### Core Documentation
+- **[Admin Endpoints Guide](./documentations/ADMIN_ENDPOINTS_GUIDE.md)** - Complete guide to admin-only endpoints and permissions
+- **[Application Factory Pattern](./documentations/APPLICATION_FACTORY_COMPLETED.md)** - Flask application factory implementation guide
+- **[JWT Authentication](./documentations/JWT_AUTHENTICATION_COMPLETED.md)** - JWT token authentication implementation details
+- **[Password Hashing](./documentations/PASSWORD_HASHING_COMPLETED.md)** - Bcrypt password hashing implementation
+- **[Database Relationships](./documentations/RELATIONSHIPS_DOCUMENTATION.md)** - Complete database relationships documentation
+- **[SQLAlchemy Integration](./documentations/SQLALCHEMY_INTEGRATION.md)** - SQLAlchemy ORM integration guide
+- **[User Model Mapping](./documentations/USER_MODEL_MAPPING.md)** - User model and database mapping details
+
+### SQL Scripts Documentation
+- **[SQL Scripts Guide](./sql_scripts/README.md)** - How to use the SQL scripts for database setup
+- **[Comprehensive SQL Documentation](./sql_scripts/SQL_SCRIPTS_DOCUMENTATION.md)** - Detailed SQL implementation guide
+
+### Database Diagrams
+- **[Database Diagrams Guide](./database_diagrams/README.md)** - Complete guide to viewing and understanding database diagrams
+- **[Core ER Diagram](./database_diagrams/hbnb_er_diagram.md)** - Main database schema diagram
+- **[Extended ER Diagram](./database_diagrams/hbnb_extended_er_diagram.md)** - Future features database schema
+- **[Relationship Types](./database_diagrams/relationship_types_diagram.md)** - Educational relationship diagrams
 
 ### Quick Access
 ```bash
-# View complete relationships documentation
-cat documentations/COMPLETE_RELATIONSHIPS_DOCUMENTATION.md
+# View admin endpoints guide
+cat documentations/ADMIN_ENDPOINTS_GUIDE.md
 
-# View many-to-many implementation guide
-cat documentations/MANY_TO_MANY_IMPLEMENTATION.md
+# View JWT authentication documentation
+cat documentations/JWT_AUTHENTICATION_COMPLETED.md
 
-# View relationships implementation details
-cat documentations/RELATIONSHIPS_IMPLEMENTATION.md
+# View SQLAlchemy integration guide
+cat documentations/SQLALCHEMY_INTEGRATION.md
+
+# View database relationships documentation
+cat documentations/RELATIONSHIPS_DOCUMENTATION.md
 ```
 
 ## 🐛 Troubleshooting
