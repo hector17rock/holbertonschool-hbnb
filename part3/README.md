@@ -47,6 +47,18 @@ part3/
 │   ├── COMPLETE_RELATIONSHIPS_DOCUMENTATION.md  # Complete relationships guide
 │   ├── MANY_TO_MANY_IMPLEMENTATION.md           # Many-to-many relationships
 │   └── RELATIONSHIPS_IMPLEMENTATION.md          # Relationships implementation
+├── database_diagrams/              # Database ER diagrams (Mermaid.js)
+│   ├── hbnb_er_diagram.md          # Core database schema
+│   ├── hbnb_extended_er_diagram.md # Extended schema with booking system
+│   ├── relationship_types_diagram.md # Educational relationship diagrams
+│   ├── diagram_examples.md         # Examples and exercises
+│   ├── view_diagrams.sh            # Safe diagram viewer script
+│   └── README.md                   # Diagram documentation
+├── sql_scripts/                    # SQL table generation scripts
+│   ├── 01_create_tables.sql        # Database schema creation
+│   ├── 02_insert_initial_data.sql  # Initial data insertion
+│   ├── 03_test_crud_operations.sql # CRUD operations testing
+│   └── README.md                   # SQL scripts documentation
 ├── tests/                          # Test files and examples
 ├── config.py                       # Application configuration
 ├── run.py                          # Application entry point
@@ -233,6 +245,151 @@ The visual representation of the database schema:
 ![HBnB Database Schema](./hbnb_diagram-1.png)
 
 *Figure: Entity-Relationship Diagram showing the complete database schema with entities, attributes, and relationships.*
+
+## 📊 Database Diagrams
+
+Comprehensive database diagrams are available in the `database_diagrams/` directory, created using Mermaid.js for better visualization and documentation.
+
+### Core Database Schema
+
+```mermaid
+erDiagram
+    USERS {
+        string id PK "UUID Primary Key"
+        string first_name "NOT NULL"
+        string last_name "NOT NULL"
+        string email "UNIQUE NOT NULL"
+        string password "NOT NULL (bcrypt hashed)"
+        boolean is_admin "DEFAULT FALSE"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    PLACES {
+        string id PK "UUID Primary Key"
+        string title "NOT NULL"
+        text description "NULLABLE"
+        decimal price "NOT NULL"
+        float latitude "NOT NULL"
+        float longitude "NOT NULL"
+        string owner_id FK "NOT NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    REVIEWS {
+        string id PK "UUID Primary Key"
+        text text "NOT NULL"
+        int rating "NOT NULL CHECK (1-5)"
+        string user_id FK "NOT NULL"
+        string place_id FK "NOT NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    AMENITIES {
+        string id PK "UUID Primary Key"
+        string name "UNIQUE NOT NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    PLACE_AMENITY {
+        string place_id FK "PRIMARY KEY"
+        string amenity_id FK "PRIMARY KEY"
+    }
+    
+    %% Relationships
+    USERS ||--o{ PLACES : "owns (owner_id)"
+    USERS ||--o{ REVIEWS : "writes (user_id)"
+    PLACES ||--o{ REVIEWS : "has (place_id)"
+    PLACES ||--o{ PLACE_AMENITY : "has (place_id)"
+    AMENITIES ||--o{ PLACE_AMENITY : "belongs_to (amenity_id)"
+```
+
+### Relationship Types
+
+```mermaid
+erDiagram
+    USER {
+        string id PK
+        string email UK
+        string first_name
+        string last_name
+        boolean is_admin
+    }
+    
+    PLACE {
+        string id PK
+        string title
+        decimal price
+        string owner_id FK
+    }
+    
+    REVIEW {
+        string id PK
+        int rating
+        string user_id FK
+        string place_id FK
+    }
+    
+    AMENITY {
+        string id PK
+        string name UK
+    }
+    
+    PLACE_AMENITY {
+        string place_id FK
+        string amenity_id FK
+    }
+    
+    %% One-to-Many Relationships
+    USER ||--o{ PLACE : "ONE user OWNS many places"
+    USER ||--o{ REVIEW : "ONE user WRITES many reviews"
+    PLACE ||--o{ REVIEW : "ONE place HAS many reviews"
+    
+    %% Many-to-Many Relationship
+    PLACE ||--o{ PLACE_AMENITY : "ONE place HAS many amenities"
+    AMENITY ||--o{ PLACE_AMENITY : "ONE amenity BELONGS TO many places"
+```
+
+### Database Design Principles
+
+#### Relationships Implemented
+- **One-to-Many**: User → Places, User → Reviews, Place → Reviews
+- **Many-to-Many**: Place ↔ Amenity (via PLACE_AMENITY junction table)
+- **Foreign Keys**: All relationships include proper constraints
+- **Business Rules**: All domain rules enforced at database level
+
+#### Constraints
+- **Primary Keys**: UUID format for all entities
+- **Foreign Keys**: Referential integrity with CASCADE DELETE
+- **Unique Constraints**: Email addresses, amenity names, user-place reviews
+- **Check Constraints**: Rating validation (1-5 stars)
+- **NOT NULL**: Required fields enforced
+
+#### Data Integrity
+- **UUID Primary Keys**: Consistent across all entities
+- **Timestamp Tracking**: Automatic created_at and updated_at
+- **Password Security**: Bcrypt hashing with salt
+- **Business Logic**: Users cannot review their own places
+
+### Additional Diagrams
+
+For more detailed diagrams and examples, see the `database_diagrams/` directory:
+
+- **[Main ER Diagram](./database_diagrams/hbnb_er_diagram.md)** - Complete core database schema
+- **[Extended Schema](./database_diagrams/hbnb_extended_er_diagram.md)** - Future booking system entities
+- **[Relationship Types](./database_diagrams/relationship_types_diagram.md)** - Educational relationship explanations
+- **[Examples](./database_diagrams/diagram_examples.md)** - Practical examples and exercises
+- **[Documentation](./database_diagrams/README.md)** - Complete diagram usage guide
+
+### Viewing the Diagrams
+
+1. **GitHub/GitLab**: View `.md` files directly - they render automatically
+2. **Mermaid Live Editor**: Copy diagram code to https://mermaid.live/
+3. **VS Code**: Install Mermaid extension and use preview mode
+4. **Safe Viewer**: Run `./database_diagrams/view_diagrams.sh` for guided viewing
 
 ## 📡 API Endpoints
 
