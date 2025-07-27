@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB - Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="images/icon.png">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <img src="images/logo.png" alt="HBnB Logo" class="logo">
+            <a href="login.html" class="login-button">Login</a>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section>
+            <h1>Welcome to HBnB</h1>
+            <p class="text-center">Discover amazing places to stay around the world</p>
+        </section>
+
+        <section class="places-container">
+            <h2 style="grid-column: 1 / -1; text-align: center; margin-bottom: 1rem;">Available Places</h2>
+            <!-- Place Card 1 -->
+            <article class="place-card">
+                <img src="images/place1.jpg" alt="Cozy Mountain Cabin" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNvenkgTW91bnRhaW4gQ2FiaW48L3RleHQ+PC9zdmc+'">
+                <h3>Cozy Mountain Cabin</h3>
+                <p class="price">$120 per night</p>
+                <a href="place.html?id=1" class="details-button">View Details</a>
+            </article>
+
+            <!-- Place Card 2 -->
+            <article class="place-card">
+                <img src="images/place2.jpg" alt="Modern City Apartment" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk1vZGVybiBDaXR5IEFwYXJ0bWVudDwvdGV4dD48L3N2Zz4='">
+                <h3>Modern City Apartment</h3>
+                <p class="price">$200 per night</p>
+                <a href="place.html?id=2" class="details-button">View Details</a>
+            </article>
+
+            <!-- Place Card 3 -->
+            <article class="place-card">
+                <img src="images/place3.jpg" alt="Beachfront Villa" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkJlYWNoZnJvbnQgVmlsbGE8L3RleHQ+PC9zdmc+'">
+                <h3>Beachfront Villa</h3>
+                <p class="price">$350 per night</p>
+                <a href="place.html?id=3" class="details-button">View Details</a>
+            </article>
+
+            <!-- Place Card 4 -->
+            <article class="place-card">
+                <img src="images/place4.jpg" alt="Historic Downtown Loft" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkhpc3RvcmljIERvd250b3duIExvZnQ8L3RleHQ+PC9zdmc+'">
+                <h3>Historic Downtown Loft</h3>
+                <p class="price">$180 per night</p>
+                <a href="place.html?id=4" class="details-button">View Details</a>
+            </article>
+
+            <!-- Place Card 5 -->
+            <article class="place-card">
+                <img src="images/place5.jpg" alt="Countryside Cottage" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNvdW50cnlzaWRlIENvdHRhZ2U8L3RleHQ+PC9zdmc+'">
+                <h3>Countryside Cottage</h3>
+                <p class="price">$95 per night</p>
+                <a href="place.html?id=5" class="details-button">View Details</a>
+            </article>
+
+            <!-- Place Card 6 -->
+            <article class="place-card">
+                <img src="images/place6.jpg" alt="Luxury Penthouse" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkx1eHVyeSBQZW50aG91c2U8L3RleHQ+PC9zdmc+'">
+                <h3>Luxury Penthouse</h3>
+                <p class="price">$500 per night</p>
+                <a href="place.html?id=6" class="details-button">View Details</a>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 HBnB. All rights reserved.</p>
+    </footer>
+</body>
+</html>

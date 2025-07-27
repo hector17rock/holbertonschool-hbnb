@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HBnB - Add Review</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" href="images/icon.png">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <img src="images/logo.png" alt="HBnB Logo" class="logo">
+            <a href="login.html" class="login-button">Logout</a>
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-container">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="place.html">Back to Place</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section>
+            <h1>Add Your Review</h1>
+            <p class="text-center">Share your experience at Cozy Mountain Cabin</p>
+        </section>
+
+        <section class="add-review">
+            <form class="form" method="POST" action="/add-review">
+                <input type="hidden" name="place_id" value="1">
+                
+                <div class="form-group">
+                    <label for="rating">Rating:</label>
+                    <select id="rating" name="rating" required>
+                        <option value="">Select a rating</option>
+                        <option value="1">★ 1/5 - Poor</option>
+                        <option value="2">★★ 2/5 - Fair</option>
+                        <option value="3">★★★ 3/5 - Good</option>
+                        <option value="4">★★★★ 4/5 - Very Good</option>
+                        <option value="5">★★★★★ 5/5 - Excellent</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="comment">Your Review:</label>
+                    <textarea id="comment" name="comment" placeholder="Tell others about your experience. What did you like? What could be improved?" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="user_name">Your Name:</label>
+                    <input type="text" id="user_name" name="user_name" placeholder="Enter your name" required>
+                </div>
+                
+                <button type="submit" class="form-button">Submit Review</button>
+                
+                <div class="text-center mt-2">
+                    <a href="place.html" style="color: #7f8c8d; text-decoration: none;">Cancel and go back</a>
+                </div>
+            </form>
+        </section>
+
+        <section style="margin-top: 2rem;">
+            <div style="background: #ecf0f1; padding: 1rem; border-radius: 5px;">
+                <h3 style="color: #2c3e50; margin-bottom: 0.5rem;">Review Guidelines</h3>
+                <ul style="color: #555; line-height: 1.6;">
+                    <li>Be honest and fair in your review</li>
+                    <li>Focus on your personal experience</li>
+                    <li>Mention specific details about the place and host</li>
+                    <li>Keep your review respectful and constructive</li>
+                    <li>Help future guests make informed decisions</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 HBnB. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Simple form validation
+        document.querySelector('.form').addEventListener('submit', function(e) {
+            const rating = document.getElementById('rating').value;
+            const comment = document.getElementById('comment').value.trim();
+            const userName = document.getElementById('user_name').value.trim();
+            
+            if (!rating || !comment || !userName) {
+                e.preventDefault();
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            if (comment.length < 10) {
+                e.preventDefault();
+                alert('Please write a more detailed review (at least 10 characters).');
+                return;
+            }
+            
+            // If validation passes, show confirmation
+            if (confirm('Are you sure you want to submit this review?')) {
+                // Form will submit normally
+                alert('Thank you for your review! It will be displayed after submission.');
+            } else {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
