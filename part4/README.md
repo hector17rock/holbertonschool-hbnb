@@ -6,15 +6,20 @@ This directory contains the HTML and CSS implementation for the HBnB application
 
 ```
 part4/
-├── index.html          # Main page - List of Places
-├── login.html          # Login Form
-├── place.html          # Place Details page
-├── add_review.html     # Add Review Form
-├── styles.css          # Main stylesheet
-├── images/             # Image assets directory
-│   ├── logo.png        # Application logo (placeholder)
-│   └── icon.png        # Favicon (placeholder)
-└── README.md          # This file
+├── BackEnd/                    # Backend application directory
+├── FrontEnd/                   # Frontend application directory
+│   ├── index.html              # Main page - List of Places
+│   ├── login.html              # Login Form
+│   ├── place.html              # Place Details page
+│   ├── add_review.html         # Add Review Form
+│   ├── styles.css              # Main stylesheet
+│   ├── scripts.js              # JavaScript functionality (login, etc.)
+│   ├── config.js               # API configuration file
+│   └── images/                 # Image assets directory
+│       ├── logo.png            # Application logo (placeholder)
+│       └── icon.png            # Favicon (placeholder)
+├── LOGIN_README.md             # Login functionality documentation
+└── README.md                   # This file
 ```
 
 ## Pages Implemented
@@ -98,8 +103,11 @@ part4/
 - Proper alt text for accessibility
 
 ### JavaScript Enhancements
-- Form validation on add review page
-- Authentication state handling (placeholder logic)
+- **Login Functionality**: Complete AJAX-based login with JWT token management
+- **Form Validation**: Client-side validation on add review page
+- **Authentication State**: Cookie-based session management
+- **Error Handling**: User-friendly error messages for login failures
+- **API Integration**: Configurable endpoints for backend communication
 - User feedback with alerts and confirmations
 
 ## Color Palette
@@ -138,14 +146,29 @@ All HTML pages are designed to pass W3C validation:
 
 ## Usage
 
-1. Open `index.html` in a web browser to view the main page
-2. Navigate through the pages using the navigation menu
-3. All forms are ready for backend integration
-4. Replace placeholder images in the `images/` directory with actual assets
+1. Navigate to the `FrontEnd/` directory
+2. Open `index.html` in a web browser to view the main page
+3. Navigate through the pages using the navigation menu
+4. All forms are ready for backend integration
+5. Replace placeholder images in the `FrontEnd/images/` directory with actual assets
+6. Update API endpoints in `FrontEnd/config.js` for backend integration
+
+## Login Functionality
+
+✅ **Fully Implemented**: Complete login system with the following features:
+- AJAX-based form submission using Fetch API
+- JWT token storage in secure HTTP-only cookies
+- Automatic redirection to main page on successful login
+- Comprehensive error handling with user-friendly messages
+- Configurable API endpoints via `config.js`
+- Cookie utility functions for session management
+
+For detailed login documentation, see `LOGIN_README.md`.
 
 ## Notes
 - The logo and favicon are currently placeholder files
-- Authentication logic is stubbed with JavaScript placeholders
-- Form submissions point to placeholder endpoints
+- **Login functionality is production-ready** and requires only API endpoint configuration
+- Other form submissions point to placeholder endpoints (ready for backend integration)
 - All CSS follows the specified fixed parameters
 - Images include fallback SVG placeholders for better UX
+- Directory structure now separates frontend and backend components
