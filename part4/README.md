@@ -119,7 +119,216 @@ part4/
 - ✅ `login-button` - Header login/logout button
 - ✅ `logo` - Application logo styling
 
-## Features
+## 🗄️ Database Architecture
+
+### Core Database Schema
+
+The HBnB application uses a well-designed relational database schema with proper relationships and constraints:
+
+```mermaid
+erDiagram
+    USERS {
+        string id PK "UUID Primary Key"
+        string first_name "NOT NULL"
+        string last_name "NOT NULL"
+        string email "UNIQUE NOT NULL"
+        string password "NOT NULL (bcrypt hashed)"
+        boolean is_admin "DEFAULT FALSE"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    PLACES {
+        string id PK "UUID Primary Key"
+        string title "NOT NULL"
+        text description "NULLABLE"
+        decimal price "NOT NULL"
+        float latitude "NOT NULL"
+        float longitude "NOT NULL"
+        string owner_id FK "NOT NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    REVIEWS {
+        string id PK "UUID Primary Key"
+        text text "NOT NULL"
+        int rating "NOT NULL CHECK (1-5)"
+        string user_id FK "NOT NULL"
+        string place_id FK "NOT NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    AMENITIES {
+        string id PK "UUID Primary Key"
+        string name "UNIQUE NOT NULL"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    PLACE_AMENITY {
+        string place_id FK "PRIMARY KEY"
+        string amenity_id FK "PRIMARY KEY"
+    }
+    
+    %% Relationships
+    USERS ||--o{ PLACES : "owns (owner_id)"
+    USERS ||--o{ REVIEWS : "writes (user_id)"
+    PLACES ||--o{ REVIEWS : "has (place_id)"
+    PLACES ||--o{ PLACE_AMENITY : "has (place_id)"
+    AMENITIES ||--o{ PLACE_AMENITY : "belongs_to (amenity_id)"
+```
+
+### Database Relationships
+
+#### One-to-Many Relationships
+1. **USERS → PLACES**: A user can own multiple places, but each place has exactly one owner
+2. **USERS → REVIEWS**: A user can write multiple reviews, but each review is written by exactly one user
+3. **PLACES → REVIEWS**: A place can have multiple reviews, but each review is for exactly one place
+
+#### Many-to-Many Relationships
+1. **PLACES ↔ AMENITIES**: A place can have multiple amenities, and an amenity can be available in multiple places (implemented via junction table `place_amenity`)
+
+### Database Constraints
+- **Primary Keys**: All tables use UUID format for primary keys
+- **Foreign Keys**: All references include proper referential integrity
+- **Unique Constraints**: 
+  - `users.email` (unique email addresses)
+  - `amenities.name` (unique amenity names)
+  - `reviews(user_id, place_id)` (one review per user per place)
+- **Check Constraints**: `reviews.rating` must be between 1 and 5
+- **NOT NULL Constraints**: All required fields are enforced
+
+### Extended Schema (Future Implementation)
+
+For future enhancements, the database design includes support for a complete booking system:
+
+```mermaid
+erDiagram
+    USERS {
+        string id PK "UUID Primary Key"
+        string first_name "NOT NULL"
+        string last_name "NOT NULL"
+        string email "UNIQUE NOT NULL"
+        string password "NOT NULL (bcrypt hashed)"
+        boolean is_admin "DEFAULT FALSE"
+        string phone "NULLABLE"
+        date date_of_birth "NULLABLE"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    PLACES {
+        string id PK "UUID Primary Key"
+        string title "NOT NULL"
+        text description "NULLABLE"
+        decimal price "NOT NULL"
+        float latitude "NOT NULL"
+        float longitude "NOT NULL"
+        string owner_id FK "NOT NULL"
+        int max_guests "DEFAULT 1"
+        int bedrooms "DEFAULT 1"
+        int bathrooms "DEFAULT 1"
+        boolean available "DEFAULT TRUE"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    BOOKINGS {
+        string id PK "UUID Primary Key"
+        string user_id FK "NOT NULL"
+        string place_id FK "NOT NULL"
+        date check_in_date "NOT NULL"
+        date check_out_date "NOT NULL"
+        int guests "NOT NULL"
+        decimal total_price "NOT NULL"
+        string status "DEFAULT 'pending'"
+        text special_requests "NULLABLE"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    PAYMENTS {
+        string id PK "UUID Primary Key"
+        string booking_id FK "NOT NULL"
+        decimal amount "NOT NULL"
+        string payment_method "NOT NULL"
+        string status "DEFAULT 'pending'"
+        string transaction_id "NULLABLE"
+        timestamp payment_date "NULLABLE"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    MESSAGES {
+        string id PK "UUID Primary Key"
+        string sender_id FK "NOT NULL"
+        string receiver_id FK "NOT NULL"
+        string booking_id FK "NULLABLE"
+        text message "NOT NULL"
+        boolean is_read "DEFAULT FALSE"
+        timestamp created_at "DEFAULT CURRENT_TIMESTAMP"
+        timestamp updated_at "DEFAULT CURRENT_TIMESTAMP"
+    }
+    
+    %% Core Relationships
+    USERS ||--o{ PLACES : "owns (owner_id)"
+    PLACES ||--o{ BOOKINGS : "booked_for (place_id)"
+    USERS ||--o{ BOOKINGS : "makes (user_id)"
+    BOOKINGS ||--|| PAYMENTS : "paid_via (booking_id)"
+    USERS ||--o{ MESSAGES : "sends (sender_id)"
+    USERS ||--o{ MESSAGES : "receives (receiver_id)"
+    BOOKINGS ||--o{ MESSAGES : "related_to (booking_id)"
+```
+
+### Relationship Types Visualization
+
+```mermaid
+erDiagram
+    USER {
+        string id PK
+        string email UK
+        string first_name
+        string last_name
+        boolean is_admin
+    }
+    
+    PLACE {
+        string id PK
+        string title
+        decimal price
+        string owner_id FK
+    }
+    
+    REVIEW {
+        string id PK
+        int rating
+        string user_id FK
+        string place_id FK
+    }
+    
+    AMENITY {
+        string id PK
+        string name UK
+    }
+    
+    PLACE_AMENITY {
+        string place_id FK
+        string amenity_id FK
+    }
+    
+    %% One-to-Many Relationships
+    USER ||--o{ PLACE : "ONE user OWNS many places"
+    USER ||--o{ REVIEW : "ONE user WRITES many reviews"
+    PLACE ||--o{ REVIEW : "ONE place HAS many reviews"
+    
+    %% Many-to-Many Relationship
+    PLACE ||--o{ PLACE_AMENITY : "ONE place HAS many amenities"
+    AMENITY ||--o{ PLACE_AMENITY : "ONE amenity BELONGS TO many places"
+```
+
+## 🚀 Features
 
 ### Responsive Design
 - Mobile-first approach with breakpoints at 768px and 480px
