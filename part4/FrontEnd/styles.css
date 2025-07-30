@@ -227,6 +227,51 @@ h2 {
     padding: 0.3rem 0.8rem;
     border-radius: 15px;
     font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+/* Amenity icons using Unicode symbols */
+.amenities li[data-amenity="wifi"]:before {
+    content: "📶";
+    font-size: 14px;
+}
+
+.amenities li[data-amenity="fireplace"]:before {
+    content: "🔥";
+    font-size: 14px;
+}
+
+.amenities li[data-amenity="kitchen"]:before {
+    content: "🍳";
+    font-size: 14px;
+}
+
+.amenities li[data-amenity="parking"]:before {
+    content: "🚗";
+    font-size: 14px;
+}
+
+.amenities li[data-amenity="hottub"]:before {
+    content: "🛁";
+    font-size: 14px;
+}
+
+.amenities li[data-amenity="view"]:before {
+    content: "🏔️";
+    font-size: 14px;
+}
+
+.amenities li[data-amenity="gym"]:before {
+    content: "🏋️";
+    font-size: 14px;
+}
+
+.amenities li[data-amenity="balcony"]:before {
+    content: "🏢";
+    font-size: 14px;
 }
 
 /* Review styles */
