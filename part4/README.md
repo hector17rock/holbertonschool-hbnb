@@ -44,15 +44,27 @@ part4/
 │   └── README.md              # Backend documentation
 ├── FrontEnd/                   # Responsive Web Interface
 │   ├── index.html              # Main page - List of Places
+│   ├── place2.html             # Modern City Apartment details
+│   ├── place3.html             # Beachfront Villa details
+│   ├── place4.html             # Historic Downtown Loft details
+│   ├── place5.html             # Countryside Cottage details
+│   ├── place6.html             # Luxury Penthouse details
 │   ├── login.html              # Login Form with JWT integration
-│   ├── place.html              # Place Details page
+│   ├── place.html              # Generic Place Details page
 │   ├── add_review.html         # Add Review Form
 │   ├── styles.css              # Responsive CSS styling
 │   ├── scripts.js              # JavaScript functionality (login, API calls)
 │   ├── config.js               # Frontend API configuration
+│   ├── README.md               # Frontend documentation
 │   └── images/                 # Image assets directory
 │       ├── logo.png            # Application logo
-│       └── icon.png            # Favicon
+│       ├── icon.png            # Favicon
+│       ├── Cozy Mountain Cabin.png      # Property image
+│       ├── Modern City Apartment.png   # Property image
+│       ├── Beachfront Villa.png        # Property image
+│       ├── Historic Downtown Loft.png  # Property image
+│       ├── Countryside Cottage.png     # Property image
+│       └── Luxury Penthouse.png        # Property image
 ├── LOGIN_README.md             # Login functionality documentation
 └── README.md                   # This file
 ```
