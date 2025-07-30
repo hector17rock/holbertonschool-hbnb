@@ -1,23 +1,58 @@
-# HBnB Front-End Implementation - Part 4
+# HBnB Evolution - Part 4: Full-Stack Integration
 
-This directory contains the HTML and CSS implementation for the HBnB application, following the design specifications and requirements.
+## Author
+- **Hector Soto**
 
-## Project Structure
+## 📖 Overview
 
+Part 4 of the HBnB Evolution project represents the complete full-stack implementation, integrating a production-ready Flask backend with a responsive frontend. This iteration combines advanced persistence capabilities, JWT authentication, comprehensive API endpoints, and a fully functional web interface.
+
+## 🏗️ Architecture
+
+### Project Structure
 ```
 part4/
-├── BackEnd/                    # Backend application directory
-├── FrontEnd/                   # Frontend application directory
+├── BackEnd/                    # Complete Flask API Backend
+│   ├── app/
+│   │   ├── __init__.py         # Flask app factory with extensions
+│   │   ├── models/             # SQLAlchemy data models
+│   │   │   ├── base_model.py   # Base model with common fields
+│   │   │   ├── user.py         # User entity with auth
+│   │   │   ├── place.py        # Place entity with relationships
+│   │   │   ├── amenity.py      # Amenity entity
+│   │   │   └── review.py       # Review entity with validation
+│   │   ├── api/
+│   │   │   └── v1/             # RESTful API endpoints
+│   │   │       ├── auth.py     # JWT authentication
+│   │   │       ├── users.py    # User management
+│   │   │       ├── places.py   # Place management
+│   │   │       ├── amenities.py# Amenity management
+│   │   │       ├── reviews.py  # Review management
+│   │   │       └── protected.py# Protected route examples
+│   │   ├── services/           # Business logic layer
+│   │   │   ├── facade.py       # Main business facade
+│   │   │   └── repositories/   # Data access layer
+│   │   └── persistence/        # Repository pattern implementation
+│   ├── documentations/         # Comprehensive API documentation
+│   ├── database_diagrams/      # ER diagrams and database design
+│   ├── sql_scripts/           # Database setup and test scripts
+│   ├── tests/                 # Comprehensive test suite
+│   ├── config.py              # Multi-environment configuration
+│   ├── run.py                 # Application entry point
+│   ├── init_db.py             # Database initialization
+│   ├── requirements.txt       # Python dependencies
+│   └── README.md              # Backend documentation
+├── FrontEnd/                   # Responsive Web Interface
 │   ├── index.html              # Main page - List of Places
-│   ├── login.html              # Login Form
+│   ├── login.html              # Login Form with JWT integration
 │   ├── place.html              # Place Details page
 │   ├── add_review.html         # Add Review Form
-│   ├── styles.css              # Main stylesheet
-│   ├── scripts.js              # JavaScript functionality (login, etc.)
-│   ├── config.js               # API configuration file
+│   ├── styles.css              # Responsive CSS styling
+│   ├── scripts.js              # JavaScript functionality (login, API calls)
+│   ├── config.js               # Frontend API configuration
 │   └── images/                 # Image assets directory
-│       ├── logo.png            # Application logo (placeholder)
-│       └── icon.png            # Favicon (placeholder)
+│       ├── logo.png            # Application logo
+│       └── icon.png            # Favicon
 ├── LOGIN_README.md             # Login functionality documentation
 └── README.md                   # This file
 ```
