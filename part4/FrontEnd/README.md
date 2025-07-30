@@ -219,10 +219,18 @@ When contributing to this project:
 4. Validate HTML and CSS
 5. Test form functionality
 
+## 👨‍💻 Author
+
+**Hector**
+- GitHub: [@hector](https://github.com/hector)
+- Project: HBnB FrontEnd Development
+- Role: Frontend Developer
+
 ## 📄 License
 
 This project is part of the Holberton School curriculum.
 
 ---
 
-**Last Updated**: January 2025
+**Last Updated**: January 2025  
+**Author**: Hector
