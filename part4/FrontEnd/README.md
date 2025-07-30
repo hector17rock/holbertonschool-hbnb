@@ -222,7 +222,7 @@ When contributing to this project:
 ## 👨‍💻 Author
 
 **Hector**
-- GitHub: [@hector](https://github.com/hector)
+- GitHub: [@hector17rock](https://github.com/hector17rock)
 - Project: HBnB FrontEnd Development
 - Role: Frontend Developer
 
