@@ -231,9 +231,20 @@ holbertonschool-hbnb/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
+#### Backend Requirements (Parts 2-4)
 - Python 3.8 or higher
 - pip (Python package manager)
 - Git for version control
+- SQLite (for Part 3+ database functionality)
+
+#### Frontend Requirements (Part 4)
+- A modern web browser (Chrome 60+, Firefox 55+, Safari 10+, Edge 16+)
+- Local web server (optional, for development):
+  - Python 3.x (for `python -m http.server`)
+  - Node.js (for `npx serve`)
+  - PHP (for `php -S localhost:8000`)
+  - Or any other local development server
 
 ### Installation & Setup
 
