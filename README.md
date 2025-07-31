@@ -68,34 +68,144 @@ holbertonschool-hbnb/
 │       ├── class_diagram.png
 │       ├── sequence_diagrams.png
 │       └── architecture_overview.png
-└── 🚀 part2/                        # Implementation Phase
-    ├── 📖 README.md                 # Implementation documentation
-    ├── ⚙️ config.py                 # Application configuration
-    ├── 📦 requirements.txt          # Python dependencies
-    ├── 🎯 run.py                    # Application entry point
-    ├── 📝 server.log                # Server logs
-    ├── 🔧 app/                      # Main application package
-    │   ├── 🌐 api/v1/               # Presentation Layer (REST API)
-    │   │   ├── users.py             # User management endpoints
-    │   │   ├── places.py            # Place management endpoints
-    │   │   ├── reviews.py           # Review management endpoints
-    │   │   └── amenities.py         # Amenity management endpoints
-    │   ├── 📊 models/               # Business Logic Layer (Data Models)
-    │   │   ├── base_model.py        # Abstract base class
-    │   │   ├── user.py              # User entity model
-    │   │   ├── place.py             # Place entity model
-    │   │   ├── review.py            # Review entity model
-    │   │   └── amenity.py           # Amenity entity model
-    │   ├── 🎯 services/             # Business Logic Layer (Services)
-    │   │   └── facade.py            # Facade pattern implementation
-    │   └── 💾 persistence/          # Persistence Layer (Data Access)
-    │       └── repository.py        # In-memory repository
-    ├── 🧪 tests/                    # Comprehensive test suite
-    │   ├── test_user_endpoints.py   # User API tests
-    │   ├── test_amenity_creation.py # Amenity tests
-    │   ├── test_put_endpoint.py     # Update operation tests
-    │   └── example_*.py             # Usage examples
-    └── 🐍 venv/                     # Python virtual environment
+├── 🚀 part2/                        # Basic Implementation Phase
+│   ├── 📖 README.md                 # Implementation documentation
+│   ├── ⚙️ config.py                 # Application configuration
+│   ├── 📦 requirements.txt          # Python dependencies
+│   ├── 🎯 run.py                    # Application entry point
+│   ├── 📝 server.log                # Server logs
+│   ├── 🔧 app/                      # Main application package
+│   │   ├── 🌐 api/v1/               # Presentation Layer (REST API)
+│   │   │   ├── users.py             # User management endpoints
+│   │   │   ├── places.py            # Place management endpoints
+│   │   │   ├── reviews.py           # Review management endpoints
+│   │   │   └── amenities.py         # Amenity management endpoints
+│   │   ├── 📊 models/               # Business Logic Layer (Data Models)
+│   │   │   ├── base_model.py        # Abstract base class
+│   │   │   ├── user.py              # User entity model
+│   │   │   ├── place.py             # Place entity model
+│   │   │   ├── review.py            # Review entity model
+│   │   │   └── amenity.py           # Amenity entity model
+│   │   ├── 🎯 services/             # Business Logic Layer (Services)
+│   │   │   └── facade.py            # Facade pattern implementation
+│   │   └── 💾 persistence/          # Persistence Layer (Data Access)
+│   │       └── repository.py        # In-memory repository
+│   ├── 🧪 tests/                    # Comprehensive test suite
+│   │   ├── test_user_endpoints.py   # User API tests
+│   │   ├── test_amenity_creation.py # Amenity tests
+│   │   ├── test_put_endpoint.py     # Update operation tests
+│   │   └── example_*.py             # Usage examples
+│   └── 🐍 venv/                     # Python virtual environment
+├── 🗄️ part3/                        # Database Integration & Advanced Features
+│   ├── 📖 README.md                 # Database implementation documentation
+│   ├── ⚙️ config.py                 # Multi-environment configuration
+│   ├── 📦 requirements.txt          # Enhanced dependencies (SQLAlchemy, JWT, etc.)
+│   ├── 🎯 run.py                    # Application entry point
+│   ├── 🔧 init_db.py                # Database initialization script
+│   ├── 🔧 app/                      # Enhanced application package
+│   │   ├── __init__.py              # Flask app factory with extensions
+│   │   ├── 🌐 api/v1/               # Enhanced REST API with authentication
+│   │   │   ├── auth.py              # JWT authentication endpoints
+│   │   │   ├── users.py             # User management with admin features
+│   │   │   ├── places.py            # Place management with ownership
+│   │   │   ├── reviews.py           # Review management with validation
+│   │   │   ├── amenities.py         # Amenity management (admin only)
+│   │   │   └── protected.py         # Protected route examples
+│   │   ├── 📊 models/               # SQLAlchemy ORM Models
+│   │   │   ├── base_model.py        # SQLAlchemy base model
+│   │   │   ├── user.py              # User model with password hashing
+│   │   │   ├── place.py             # Place model with relationships
+│   │   │   ├── review.py            # Review model with constraints
+│   │   │   └── amenity.py           # Amenity model
+│   │   ├── 🎯 services/             # Business Logic with Repository Pattern
+│   │   │   ├── facade.py            # In-memory facade (backward compatibility)
+│   │   │   ├── facade_db.py         # Database-ready facade
+│   │   │   ├── facade_sqlalchemy.py # Complete SQLAlchemy facade
+│   │   │   └── repositories/        # Specialized repositories
+│   │   │       └── user_repository.py # User-specific operations
+│   │   └── 💾 persistence/          # Enhanced persistence layer
+│   │       └── repository.py        # Abstract repository with SQLAlchemy
+│   ├── 📚 documentations/           # Comprehensive documentation
+│   │   ├── ADMIN_ENDPOINTS_GUIDE.md         # Admin functionality guide
+│   │   ├── APPLICATION_FACTORY_COMPLETED.md # App factory pattern
+│   │   ├── JWT_AUTHENTICATION_COMPLETED.md  # JWT implementation
+│   │   ├── PASSWORD_HASHING_COMPLETED.md    # Bcrypt integration
+│   │   ├── RELATIONSHIPS_DOCUMENTATION.md   # Database relationships
+│   │   ├── SQLALCHEMY_INTEGRATION.md        # ORM integration
+│   │   └── USER_MODEL_MAPPING.md            # User model mapping
+│   ├── 📊 database_diagrams/        # ER diagrams and database design
+│   │   ├── hbnb_er_diagram.md       # Core database schema
+│   │   ├── hbnb_extended_er_diagram.md # Extended schema
+│   │   ├── relationship_types_diagram.md # Relationship examples
+│   │   ├── diagram_examples.md      # Practical examples
+│   │   ├── view_diagrams.sh         # Safe diagram viewer
+│   │   └── README.md                # Diagram documentation
+│   ├── 🔧 sql_scripts/              # Database setup and testing
+│   │   ├── 00_execute_all.sql       # Master execution script
+│   │   ├── 01_create_tables.sql     # Schema creation
+│   │   ├── 02_insert_initial_data.sql # Test data insertion
+│   │   ├── 03_test_crud_operations.sql # CRUD testing
+│   │   ├── generate_uuids.py        # UUID generation utility
+│   │   ├── test_sql_scripts.py      # Script validation
+│   │   ├── README.md                # SQL scripts guide
+│   │   └── SQL_SCRIPTS_DOCUMENTATION.md # Comprehensive SQL docs
+│   ├── 🧪 tests/                    # Enhanced test suite
+│   │   ├── test_*.py                # Various test modules
+│   │   └── example_*.py             # Usage examples
+│   ├── 📝 BCRYPT_USAGE.md           # Password hashing guide
+│   ├── 📝 SQLALCHEMY_IMPLEMENTATION_SUMMARY.md # Database summary
+│   ├── 💾 instance/                 # SQLite database files
+│   └── 🐍 venv/                     # Python virtual environment
+└── 🌐 part4/                        # Full-Stack Integration
+    ├── 📖 README.md                 # Full-stack documentation
+    ├── 📖 LOGIN_README.md           # Login functionality guide
+    ├── 🔧 BackEnd/                  # Complete Flask API Backend
+    │   ├── 📖 README.md             # Backend documentation
+    │   ├── ⚙️ config.py             # Production configuration
+    │   ├── 📦 requirements.txt      # Backend dependencies
+    │   ├── 🎯 run.py                # Backend entry point
+    │   ├── 🔧 init_db.py            # Database initialization
+    │   ├── 🔧 app/                  # Production-ready Flask app
+    │   │   ├── __init__.py          # App factory with CORS
+    │   │   ├── 🌐 api/v1/           # Production API endpoints
+    │   │   │   ├── auth.py          # JWT authentication
+    │   │   │   ├── users.py         # User management
+    │   │   │   ├── places.py        # Place management
+    │   │   │   ├── reviews.py       # Review management
+    │   │   │   ├── amenities.py     # Amenity management
+    │   │   │   └── protected.py     # Protected routes
+    │   │   ├── 📊 models/           # Production ORM models
+    │   │   ├── 🎯 services/         # Production business logic
+    │   │   └── 💾 persistence/      # Production persistence
+    │   ├── 📚 documentations/       # Backend documentation
+    │   ├── 📊 database_diagrams/    # Database design docs
+    │   ├── 🔧 sql_scripts/          # Production SQL scripts
+    │   ├── 🧪 tests/                # Backend test suite
+    │   └── 💾 instance/             # Production database
+    └── 🎨 FrontEnd/                 # Responsive Web Interface
+        ├── 📖 README.md             # Frontend documentation
+        ├── 🏠 index.html            # Main page - Places listing
+        ├── 🔐 login.html            # Login form with JWT
+        ├── 🏘️ place.html            # Generic place details
+        ├── 🏘️ place2.html           # Modern City Apartment
+        ├── 🏘️ place3.html           # Beachfront Villa
+        ├── 🏘️ place4.html           # Historic Downtown Loft
+        ├── 🏘️ place5.html           # Countryside Cottage
+        ├── 🏘️ place6.html           # Luxury Penthouse
+        ├── ⭐ add_review.html        # Add review form
+        ├── 🎨 styles.css             # Responsive CSS styling
+        ├── ⚡ scripts.js             # JavaScript functionality
+        ├── ⚙️ config.js              # Frontend API configuration
+        └── 🖼️ images/                # Image assets
+            ├── logo.png             # Application logo
+            ├── icon.png             # Favicon
+            ├── background.png       # Header background
+            ├── Cozy Mountain Cabin.png      # Property images
+            ├── Modern City Apartment.png    # Property images
+            ├── Beachfront Villa.png         # Property images
+            ├── Historic Downtown Loft.png   # Property images
+            ├── Countryside Cottage.png      # Property images
+            └── Luxury Penthouse.png         # Property images
 ```
 
 ## 🔧 Technical Stack
