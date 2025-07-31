@@ -1,4 +1,5 @@
-# HBnB Evolution Project <img src="part4/FrontEnd/images/icon.png" alt="HBnB Icon" width="90" height="90">
+<img src="part4/FrontEnd/images/icon.png" alt="HBnB Icon" width="90" height="90">
+# HBnB Evolution Project
 
 A comprehensive **AirBnB clone** application developed as part of the Holberton School curriculum. This project demonstrates the complete software development lifecycle from architectural design to implementation, featuring a modern **three-layer architecture** with RESTful APIs, object-oriented programming, and scalable design patterns.
 
