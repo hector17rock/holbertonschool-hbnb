@@ -1,4 +1,6 @@
-<img src="part4/FrontEnd/images/icon.png" alt="HBnB Icon" width="64" height="64">
+<div align="center">
+  <img src="part4/FrontEnd/images/icon.png" alt="HBnB Icon" width="64" height="64">
+</div>
 
 # HBnB Evolution Project
 
