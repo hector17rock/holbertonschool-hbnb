@@ -5,11 +5,30 @@ A comprehensive **AirBnB clone** application developed as part of the Holberton 
 ## 🌟 Project Overview
 
 **Repository:** `holbertonschool-hbnb`  
+**Author:** Hector Soto ([@hector17rock](https://github.com/hector17rock))  
 **School:** Holberton School  
-**Track:** Backend Web Development  
+**Track:** Full-Stack Software Engineering  
 **Architecture:** Three-Layer Architecture with Facade Pattern  
-**Framework:** Flask + Flask-RESTx  
-**Status:** Complete Multi-Part Implementation (Parts 1-4: Design → Backend → Database → Full-Stack)
+**Backend Framework:** Flask + Flask-RESTx + SQLAlchemy  
+**Frontend Technologies:** HTML5, CSS3, JavaScript (ES6+)  
+**Database:** SQLite with SQLAlchemy ORM  
+**Authentication:** JWT-based authentication with bcrypt password hashing  
+**Status:** ✅ Complete Multi-Part Implementation (Parts 1-4: Design → Backend → Database → Full-Stack)
+
+### Implementation Scope
+- **Part 1**: 📋 Complete UML design and architectural documentation
+- **Part 2**: 🚀 RESTful API implementation with in-memory storage
+- **Part 3**: 🗄️ Database integration with SQLAlchemy, JWT authentication, and advanced features
+- **Part 4**: 🌐 Full-stack implementation with responsive frontend and backend integration
+
+### Key Features Implemented
+- 🏗️ **Production-Ready Backend**: Flask API with comprehensive endpoints
+- 🎨 **Responsive Frontend**: Modern web interface with 6+ property pages
+- 🔐 **Authentication System**: JWT tokens with secure login/logout
+- 🗄️ **Database Persistence**: SQLAlchemy ORM with relationship management
+- 📊 **Comprehensive Documentation**: ER diagrams, API docs, and implementation guides
+- 🧪 **Testing Suite**: Unit tests and validation scripts
+- 🎯 **Business Logic**: User roles, ownership validation, and review systems
 
 ## 🎯 Project Objectives
 
