@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="part4/FrontEnd/images/icon.png" alt="HBnB Icon" width="64" height="64">
+  <img src="part4/FrontEnd/images/icon.png" alt="HBnB Icon" width="100" height="100">
 </div>
 
 # HBnB Evolution Project
