@@ -494,6 +494,14 @@ This repository represents academic work completed as part of the Holberton Scho
 **Duration**: Multi-part implementation  
 **Technologies**: Python, Flask, RESTful APIs, OOP
 
+## 👨‍💻 Author
+
+**Hector Soto**  
+- **GitHub**: [@hector17rock](https://github.com/hector17rock)  
+- **Institution**: Holberton School  
+- **Role**: Full-Stack Developer  
+- **Project**: HBnB Evolution - Complete AirBnB Clone Implementation
+
 ---
 
 *This project demonstrates the progression from architectural design to full-stack implementation, showcasing modern software engineering practices and design patterns in a real-world application context.*
